@@ -1,5 +1,6 @@
-const ipfs = require("./IPFS_API")
-var network = require("fabric-network")
+import * as IPFS from 'ipfs-core';
+var network = require("fabric-network");
+const node = await IPFS.create();
 
 const contract;
 
@@ -18,25 +19,60 @@ module exports = {
 
     uploadFile: function(patient, filepath) {
         //upload file to IPFS using IPFS api
-        hash = ipfs.upload(filepath, async (err, hashFile)=>{
-            if(err) return {success:false, description:"IPFS upload error"};//failure to upload
-            {const isUpdate = await contract.createTransaction("medicalRecordsExists").submit(patient)});
+        fileAdded = node.add({
+            path: filepath
+        });
 
-        if(isUpdate) const success = await contract.createTransaction("updateMedicalRecords")
-            .setTransient(hash)
+        const isUpdate = await contract.createTransaction("medicalRecordsExist")
             .submit(patient);
-        else const success = await contract.createTransaction("createMedicalRecords")
-            .setTransient(hash)
-            .submit(patient);
-            return success;
+        
+        if(isUpdate) 
+        {
+            const success = await contract.createTransaction("updateMedicalRecords")
+                .setTransient(fileAdded.cid)
+                .submit(patient);
+        }
+        else 
+        {
+            const success = await contract.createTransaction("createMedicalRecords")
+                .setTransient(fileAdded.cid)
+                .submit(patient);
+        }
+        return success;
     }
 
     findFile: function(patient) {
-        //query to retrieve hash from blockchain (catch error for person not found)
-        //use IPFS_API to retrieve file from IPFS (cb is async (err, someVar))
+        const exists = await contract.createTransaction("medicalRecordsExist")
+            .submit(patient);
+        if(!exists)
+        {
+            return {type: "error", description:"Patient has no file"}
+        }
+
+        const hash = await contract.createTransaction("readMedicalRecords")
+                .submit(patient);
+
+        // node.get(hash) ----> returns file
+        // const chunks = []; -----> returns contents of file
+        // for await (const chunk of node.cat(fileAdded.cid)) {
+        //     chunks.push(chunk);
+        // }
+
+        //process chunks so it will display in UI
     }
 
     dropPatient: function(patient) {
+        const exists = await contract.createTransaction("medicalRecordsExist")
+            .submit(patient);
+        if(!exists)
+        {
+            return {type: "error", description:"Patient has no file"}
+        }
+
+        const success = await contract.createTransaction("deleteMedicalRecords")
+                .submit(patient);
+
+        
         //query deleterecord, catch not exists error
     }
 }
