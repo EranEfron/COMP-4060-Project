@@ -17,7 +17,7 @@ module exports = {
         contract = network.getContract(chaincodeId);
     }
 
-    uploadFile: function(patient, filepath) {
+    uploadFile: function(patient, filepath) {// potentially add contract as a parameter, if connection is handled elsewhere
         //upload file to IPFS using IPFS api
         fileAdded = node.add({
             path: filepath
