@@ -13,7 +13,7 @@ async function connect(walletDirectoryPath, identity, channelName, chaincodeId) 
     wallet: wallet,
     };
     const gateway = new Gateway();
-    const temp = await gateway.connect(commonConnectionProfile, gatewayOptions);
+    const temp = await gateway.connect(commonConnectionProfile, GatewayOptions);
     const network = await gateway.getNetwork(channelName);
     contract = network.getContract(chaincodeId);
 }
@@ -26,24 +26,24 @@ async function uploadFile(patient, filepath) {// potentially add contract as a p
     });
     console.log(fileAdded.cid)
 
-    // const isUpdate = await contract.createTransaction("medicalRecordsExists")
-    //     .submit(patient);
-    // // const isUpdate = true;
+    const isUpdate = await contract.createTransaction("medicalRecordsExists")
+        .submit(patient);
+    // const isUpdate = true;
     
-    // if(isUpdate) 
-    // {
-    //     const success = await contract.createTransaction("updateMedicalRecords")
-    //         .setTransient(fileAdded.cid)
-    //         .submit(patient);
-    // }
-    // else 
-    // {
-    //     const success = await contract.createTransaction("createMedicalRecords")
-    //         .setTransient(fileAdded.cid)
-    //         .submit(patient);
-    // }
+    if(isUpdate) 
+    {
+        const success = await contract.createTransaction("updateMedicalRecords")
+            .setTransient(fileAdded.cid)
+            .submit(patient);
+    }
+    else 
+    {
+        const success = await contract.createTransaction("createMedicalRecords")
+            .setTransient(fileAdded.cid)
+            .submit(patient);
+    }
     console.log(fileAdded.cid);//so I can find the file on my ipfs
-    // return success;
+    return success;
 }
 
 // async function findFile(patient) {
@@ -82,5 +82,5 @@ async function uploadFile(patient, filepath) {// potentially add contract as a p
 // }
 
 
-// connect("Org1Wallet", "Org1 Admin.id", "mychannel", "Project@0.0.1");
+connect("./Org1Wallet", "./Org1 Admin.id", "mychannel", "Project@0.0.1");
 uploadFile("Tester", "./test.txt");
