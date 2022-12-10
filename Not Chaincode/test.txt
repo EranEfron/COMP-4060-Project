@@ -1,0 +1,6 @@
+Hello World
+
+const DB = require("./CliDBInteractions");
+
+DB.connect("Org1Wallet", "Org1 Admin.id", "mychannel");
+DB.uploadFile("Tester", "test.txt");
