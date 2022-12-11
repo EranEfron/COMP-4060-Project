@@ -1,23 +1,44 @@
 import {create} from "ipfs-http-client";
 import * as fabricNetwork from 'fabric-network';
+import * as os from 'os';
+import * as fs from 'fs';
 const gateway = new fabricNetwork.Gateway();
-const network = await gateway.getNetwork('mychannel');
-let contract = await network.getContract('','MedicalRecordsContract')
+await connect();
+// const network = await gateway.getNetwork('mychannel');
+// let contract = await network.getContract('Project','MedicalRecordsContract');
 const ipfs= await create({host:"127.0.0.1", port:5001, protocol:"http"});
 
-var contract;
-
-// async function connect(walletDirectoryPath, identity, channelName, chaincodeId) {
-//     const wallet = await Wallets.newFileSystemWallet(walletDirectoryPath);
-//     const GatewayOptions = {
-//     identity: identity, // Previously imported identity
-//     wallet: wallet,
-//     };
-//     const gateway = new Gateway();
-//     const temp = await gateway.connect(commonConnectionProfile, GatewayOptions);
-//     const network = await gateway.getNetwork(channelName);
-//     contract = network.getContract(chaincodeId);
-// }
+async function connect() {
+    try {    
+        const identityName = 'Org1 Admin';
+        let connectionProfile = fs.readFileSync("./ProjectEnvironmentOrg1GatewayConnection.json", "utf8");
+        connectionProfile = JSON.parse(connectionProfile);
+        let wallet = await fabricNetwork.Wallets.newFileSystemWallet("./Org1Wallet");
+    
+        const discoveryAsLocalhost = true;
+        const discoveryEnabled = true;
+    
+        const networkObj = {
+          wallet: wallet,
+          identity: identityName,
+          discovery: {
+            asLocalhost: discoveryAsLocalhost,
+            enabled: discoveryEnabled
+          }
+        };
+        await gateway.connect(connectionProfile, networkObj);
+    
+      } catch (error) {
+        console.log(`Error processing transaction. ${error}`);
+        console.log(error.stack);
+        let response = {};
+        response.error = error;
+        return response;
+      } finally {
+        console.log('Done connecting to network.');
+        return "sucess"
+      }
+}
 
 async function uploadFile(patient, filename, file) {// potentially add contract as a parameter, if connection is handled elsewhere
     //upload file to IPFS using IPFS api
@@ -27,7 +48,7 @@ async function uploadFile(patient, filename, file) {// potentially add contract 
     });
     console.log(fileAdded.cid)
 
-    const isUpdate = await contract.createTransaction("medicalRecordsExists")
+    const isUpdate = await contract.submitTransaction("medicalRecordsExists")
         .submit(patient);
     // const isUpdate = true;
     
