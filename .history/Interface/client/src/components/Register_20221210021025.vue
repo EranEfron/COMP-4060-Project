@@ -78,7 +78,7 @@
           password: [
             { required: true, message: 'Please input password', trigger: 'blur' }
           ],
-          id: [
+          ID: [
             { required: true, message: 'Please input Health card ID', trigger: 'blur' }
           ]
         }
@@ -102,7 +102,6 @@
         this.$router.push({name:'Login'})
       },
       async registerUser(){
-        alert(this.ruleForm.id)
         const apiResponse = await PostsService.registerUser(
           this.ruleForm.name,
           this.ruleForm.password,

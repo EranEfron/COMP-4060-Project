@@ -55,7 +55,6 @@ class MedicalRecordsContract extends Contract {
         let returnMsg = { success: false, description: 'Register Failled, username have already exist' }
         try {
             const collectionName = await ctx.stub.getCollectionName(ctx);
-            console.info("123123");
             const buffer = await ctx.stub.getPrivateData(collectionName, username);
             let exist = (!!buffer && buffer.length > 0);
             if (!exist) {
@@ -63,20 +62,22 @@ class MedicalRecordsContract extends Contract {
                     password: password,
                     identity: identity
                 };
-                await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(User_info)));
                 returnMsg = { success: true, description: 'Registered successfully' }
+                await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(User_info)));
             }
         } catch (error) {
-            return { success: false, description: "error" }
+            return { success: false, description: error }
         }
         return returnMsg;
     }
-    async queryUser(ctx, username) {
+    async queryUser(ctx,username){
         const collectionName = await getCollectionName(ctx);
-        const privateData = await ctx.stub.getPrivateData(collectionName, username);
+        const privateData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
         let exist = (!!privateData && privateData.length > 0);
-        if (!exist) {
-            return { success: false, description: `The user of ${username} does not exist` }
+        if (!exist){
+            let response = {};
+            response.error = `Username ${username} does not exist`
+            return `Username ${username} does not exist`
         }
         const returnMsg = JSON.parse(privateData.toString());
         return returnMsg;
@@ -96,7 +97,7 @@ class MedicalRecordsContract extends Contract {
 
         const collectionName = await getCollectionName(ctx);
         await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateAsset)));
-        return { success: true, description: 'Update successful' }
+        return { success: true, description:'Update successful'}
     }
 
     async deleteMedicalRecords(ctx, medicalRecordsId) {
@@ -127,13 +128,12 @@ class MedicalRecordsContract extends Contract {
             return false;
         }
     }
-    async queryAll(ctx) {
+    async queryAll(ctx){
         const startKey = '';
         const endKey = '';
         const allResults = [];
-        const collectionName = await getCollectionName(ctx);
-
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
+        
+        for await (const {key, value} of ctx.stub.GetPrivateDataByRange(startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {
@@ -142,17 +142,17 @@ class MedicalRecordsContract extends Contract {
                 console.log(err);
                 record = strValue;
             }
-            allResults.push({ Key: key, Record: record });
+                allResults.push({ Key: key, Record: record });
         }
         console.info("THIS IS ALL" + allResults);
         return JSON.stringify(allResults);
     }
 
-    async deleteAll(ctx) {
+    async deleteAll(ctx){
         const startKey = '';
         const endKey = '';
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(startKey, endKey)) {
+        for await (const {key, value} of ctx.stub.getPrivateDataByRange(startKey, endKey)) {
             await ctx.stub.deletePrivateData(key);
         }
     }

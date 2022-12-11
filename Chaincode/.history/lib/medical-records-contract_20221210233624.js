@@ -55,7 +55,6 @@ class MedicalRecordsContract extends Contract {
         let returnMsg = { success: false, description: 'Register Failled, username have already exist' }
         try {
             const collectionName = await ctx.stub.getCollectionName(ctx);
-            console.info("123123");
             const buffer = await ctx.stub.getPrivateData(collectionName, username);
             let exist = (!!buffer && buffer.length > 0);
             if (!exist) {
@@ -131,9 +130,8 @@ class MedicalRecordsContract extends Contract {
         const startKey = '';
         const endKey = '';
         const allResults = [];
-        const collectionName = await getCollectionName(ctx);
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
+        for await (const { key, value } of ctx.stub.GetPrivateDataByRange(startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {

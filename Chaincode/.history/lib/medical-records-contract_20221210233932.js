@@ -133,7 +133,7 @@ class MedicalRecordsContract extends Contract {
         const allResults = [];
         const collectionName = await getCollectionName(ctx);
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
+        for await (const { key, value } of ctx.stub.GetPrivateDataByRange(collectionName,startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {

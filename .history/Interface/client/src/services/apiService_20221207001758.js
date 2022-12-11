@@ -9,14 +9,7 @@ export default {
       ownerLastName:ownerLastName
     })
   },
-  registerUser(name,password,identity,ID){
-    return Api().post('registerUser',{
-      username:name,
-      password:password,
-      identity:identity,
-      ID:ID
-    })
-  },
+  
   addCar(vin,make,model,year,milage,ownerFirstName, ownerLastName){
     return Api().post('addCar', {
       ownerFirstName:ownerFirstName,

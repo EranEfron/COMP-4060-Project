@@ -78,7 +78,7 @@
           password: [
             { required: true, message: 'Please input password', trigger: 'blur' }
           ],
-          id: [
+          ID: [
             { required: true, message: 'Please input Health card ID', trigger: 'blur' }
           ]
         }
