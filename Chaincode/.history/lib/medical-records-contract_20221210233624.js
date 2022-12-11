@@ -21,7 +21,7 @@ class MedicalRecordsContract extends Contract {
         return (!!data && data.length > 0);
     }
 
-    async createMedicalRecords(ctx, medicalRecordsId) { // create a new patient with stored records
+    async createMedicalRecords(ctx, medicalRecordsId) {
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
         if (exists) {
             return { success: false, description: `The asset medical records ${medicalRecordsId} already exists` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
@@ -40,7 +40,7 @@ class MedicalRecordsContract extends Contract {
         return { success: true, description: 'Successfully added record reference to blockchain' }
     }
 
-    async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient
+    async readMedicalRecords(ctx, medicalRecordsId) {
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
         if (!exists) {
             return { success: false, description: `The asset medical records ${medicalRecordsId} does not exist` }// throw new Error(`The asset medical records ${medicalRecordsId} does not exist`);
@@ -55,7 +55,6 @@ class MedicalRecordsContract extends Contract {
         let returnMsg = { success: false, description: 'Register Failled, username have already exist' }
         try {
             const collectionName = await ctx.stub.getCollectionName(ctx);
-            console.info("123123");
             const buffer = await ctx.stub.getPrivateData(collectionName, username);
             let exist = (!!buffer && buffer.length > 0);
             if (!exist) {
@@ -131,9 +130,8 @@ class MedicalRecordsContract extends Contract {
         const startKey = '';
         const endKey = '';
         const allResults = [];
-        const collectionName = await getCollectionName(ctx);
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
+        for await (const { key, value } of ctx.stub.GetPrivateDataByRange(startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {

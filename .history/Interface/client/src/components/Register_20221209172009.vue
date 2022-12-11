@@ -20,7 +20,7 @@
           <el-input v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item label="Health Card ID" prop="ID">
-          <el-input v-model="ruleForm.id"></el-input>
+          <el-input v-model="ruleForm.ID"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">Submit</el-button>
@@ -78,7 +78,7 @@
           password: [
             { required: true, message: 'Please input password', trigger: 'blur' }
           ],
-          id: [
+          ID: [
             { required: true, message: 'Please input Health card ID', trigger: 'blur' }
           ]
         }
@@ -102,12 +102,11 @@
         this.$router.push({name:'Login'})
       },
       async registerUser(){
-        alert(this.ruleForm.id)
         const apiResponse = await PostsService.registerUser(
           this.ruleForm.name,
           this.ruleForm.password,
           this.ruleForm.identity,
-          this.ruleForm.id
+          this.ruleForm.ID
         )
         console.log(apiResponse)
       }

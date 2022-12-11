@@ -21,7 +21,7 @@ class MedicalRecordsContract extends Contract {
         return (!!data && data.length > 0);
     }
 
-    async createMedicalRecords(ctx, medicalRecordsId) { // create a new patient with stored records
+    async createMedicalRecords(ctx, medicalRecordsId) {
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
         if (exists) {
             return { success: false, description: `The asset medical records ${medicalRecordsId} already exists` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
@@ -40,7 +40,7 @@ class MedicalRecordsContract extends Contract {
         return { success: true, description: 'Successfully added record reference to blockchain' }
     }
 
-    async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient
+    async readMedicalRecords(ctx, medicalRecordsId) {
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
         if (!exists) {
             return { success: false, description: `The asset medical records ${medicalRecordsId} does not exist` }// throw new Error(`The asset medical records ${medicalRecordsId} does not exist`);
