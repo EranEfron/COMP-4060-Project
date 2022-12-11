@@ -1,28 +1,29 @@
 import {create} from "ipfs-http-client";
-import pkg from 'fabric-network';
-const {Wallets, Gateway} = pkg;
+import * as fabricNetwork from 'fabric-network';
+const gateway = new fabricNetwork.Gateway();
+const network = await gateway.getNetwork('mychannel');
+let contract = await network.getContract('','MedicalRecordsContract')
 const ipfs= await create({host:"127.0.0.1", port:5001, protocol:"http"});
-import fs from 'fs';
 
 var contract;
 
-async function connect(walletDirectoryPath, identity, channelName, chaincodeId) {
-    const wallet = await Wallets.newFileSystemWallet(walletDirectoryPath);
-    const GatewayOptions = {
-    identity: identity, // Previously imported identity
-    wallet: wallet,
-    };
-    const gateway = new Gateway();
-    const temp = await gateway.connect(commonConnectionProfile, GatewayOptions);
-    const network = await gateway.getNetwork(channelName);
-    contract = network.getContract(chaincodeId);
-}
+// async function connect(walletDirectoryPath, identity, channelName, chaincodeId) {
+//     const wallet = await Wallets.newFileSystemWallet(walletDirectoryPath);
+//     const GatewayOptions = {
+//     identity: identity, // Previously imported identity
+//     wallet: wallet,
+//     };
+//     const gateway = new Gateway();
+//     const temp = await gateway.connect(commonConnectionProfile, GatewayOptions);
+//     const network = await gateway.getNetwork(channelName);
+//     contract = network.getContract(chaincodeId);
+// }
 
-async function uploadFile(patient, filepath) {// potentially add contract as a parameter, if connection is handled elsewhere
+async function uploadFile(patient, filename, file) {// potentially add contract as a parameter, if connection is handled elsewhere
     //upload file to IPFS using IPFS api
     var fileAdded = await ipfs.add({
-        path: filepath,
-        content: fs.readFileSync(filepath).toString()
+        path: filename,
+        content: file
     });
     console.log(fileAdded.cid)
 
@@ -80,7 +81,3 @@ async function uploadFile(patient, filepath) {// potentially add contract as a p
     
 //     //query deleterecord, catch not exists error
 // }
-
-
-connect("./Org1Wallet", "./Org1 Admin.id", "mychannel", "Project@0.0.1");
-uploadFile("Tester", "./test.txt");
