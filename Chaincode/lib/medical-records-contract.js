@@ -54,7 +54,7 @@ class MedicalRecordsContract extends Contract {
     async registerUser(ctx, username, password, identity) {
         let returnMsg = { success: false, description: 'Register Failled, username have already exist' }
         try {
-            const collectionName = await ctx.stub.getCollectionName(ctx);
+            const collectionName = await getCollectionName(ctx);
             console.info("123123");
             const buffer = await ctx.stub.getPrivateData(collectionName, username);
             let exist = (!!buffer && buffer.length > 0);
@@ -67,7 +67,7 @@ class MedicalRecordsContract extends Contract {
                 returnMsg = { success: true, description: 'Registered successfully' }
             }
         } catch (error) {
-            return { success: false, description: "error" }
+            return { success: false, description: error }
         }
         return returnMsg;
     }
