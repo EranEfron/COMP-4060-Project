@@ -100,13 +100,14 @@ app.post('/registerUser', async (req, res) => {
     res.send(response);
   }
 });
-app.post('/Login', async(req,res) =>{
+app.get('/Login', async(req,res) =>{
+  console.log("in app")
   let networkObj = await network.connectToNetwork();
   let username = req.body.username;
   let password = req.body.password;
   let identity = req.body.identity;
   const args = [username,password,identity];
-  console.log(args);
+
   let response = await network.invoke(true, 'validateLogin', args);
 
   console.log("done invoke");

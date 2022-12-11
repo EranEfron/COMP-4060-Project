@@ -1,9 +1,9 @@
 <template>
-  
+
   <div class="loginBox">
-    <h1>Log in to your account</h1>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="login-ruleForm"
-      label-position="right">
+    <h1>Register your account</h1>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="login-ruleForm"
+      label-position="left">
       <el-form-item label="Identity" prop="identity">
         <el-select v-model="ruleForm.identity" placeholder="Select your identity">
           <el-option label="Patient" value="Patient"></el-option>
@@ -19,11 +19,13 @@
       <el-form-item label="Password" prop="password">
         <el-input v-model="ruleForm.password"></el-input>
       </el-form-item>
-
+      <el-form-item label="Health Card ID" prop="id" :required="isHaveTo">
+        <el-input v-model="ruleForm.id"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">Submit</el-button>
-        <el-button  @click="resetForm('ruleForm')">Reset</el-button>
-        <el-button type="primary" @click="register()">Register</el-button>
+        <el-button @click="resetForm('ruleForm')">Reset</el-button>
+        <el-button type="primary" @click="Login()">Login</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -44,9 +46,11 @@
   background-color: #eee;
   border-radius: 15px;
 }
-body{
-  background-color: rgb(235, 90, 24);
+
+body {
+  background-color: rgb(154, 193, 226);
 }
+
 .loginbody {
   overflow: scroll;
   overflow-y: hidden;
@@ -58,11 +62,21 @@ import PostsService from "@/services/apiService";
 
 export default {
   data() {
+    let validateID = (rule, value, callback) => {
+      
+        if(this.ruleForm.id == "" && this.isHaveTo){ 
+          callback(new Error("Please input your Health card ID"))
+        }else{  
+          callback();
+        }
+    };
     return {
+
       ruleForm: {
         name: '',
         password: '',
-        identity: ''
+        identity: '',
+        id: ''
       },
 
       rules: {
@@ -73,16 +87,25 @@ export default {
           { required: true, message: 'please select your identity', trigger: 'change' }
         ],
         password: [
-          { required: true, message: 'Please input username', trigger: 'blur' }
+          { required: true, message: 'Please input password', trigger: 'blur' }
+        ],
+        id:[
+          {validator: validateID}
         ]
+
       }
     };
   },
+  computed:{
+    isHaveTo: function() {
+      return this.ruleForm.identity ==`Patient`;
+    }
+  },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          this.Login();
+          this.registerUser();
         } else {
           console.log('error submit!!');
           return false;
@@ -92,25 +115,25 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    register(){
-      this.$router.push({name:'Register'})
+    Login() {
+      this.$router.push({ name: 'Login' })
     },
-    async Login(){
-      const apiResponse = await PostsService.Login(
+    async registerUser() {
+      const apiResponse = await PostsService.registerUser(
         this.ruleForm.name,
         this.ruleForm.password,
-        this.ruleForm.identity
+        this.ruleForm.identity,
+        this.ruleForm.id
       )
-      console.log(apiResponse)
       if(apiResponse.data.success == true){
         this.$message({
           message: apiResponse.data.description,
           type: 'success'
         });
-        this.$router.push({name:'Home_page'})
       }else{
         this.$message.error(apiResponse.data.description,);
       }
+      console.log(apiResponse.data.description)
     }
   }
 }

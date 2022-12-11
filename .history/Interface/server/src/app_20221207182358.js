@@ -37,7 +37,7 @@ app.get('/queryAll', async (req, res) => {
 });
 
 
-app.post('/update', async (req, res) => {
+app.post('/update',async(req,res)=>{
   let networkObj = await network.connectToNetwork(appAdmin);
   let vin = req.body.vin;
   let milage = req.body.milage;
@@ -45,7 +45,7 @@ app.post('/update', async (req, res) => {
   let ownerLastName = req.body.ownerLastName;
   const args = [vin, milage, ownerFirstName, ownerLastName];
   let response = await network.invoke(networkObj, false, 'update', args);
-
+  
   if (response.error) {
     res.send(response.error);
   } else {
@@ -65,7 +65,7 @@ app.post('/addCar', async (req, res) => {
   let ownerFirstName = req.body.ownerFirstName;
   let ownerLastName = req.body.ownerLastName;
   const args = [vin, make, model, year, milage, ownerFirstName, ownerLastName];
-
+  
   let response = await network.invoke(networkObj, false, 'add', args);
   if (response.error) {
     res.send(response.error);
@@ -76,43 +76,7 @@ app.post('/addCar', async (req, res) => {
     res.send(response);
   }
 });
-app.post('/registerUser', async (req, res) => {
-  let networkObj = await network.connectToNetwork()
-  console.log ("=====Network Obj" + networkObj);
-  let username = req.body.username;
-  let password = req.body.password;
-  let identity = req.body.identity;
-  let id = req.body.id;
-  const args = [username,password,identity,id];
-  console.log(args)
 
-  let response = await network.invoke(false, 'registerUser', args);
-
-  console.log("done invoke")
-  console.log(response)
-
-  if (response.error) {
-    res.send(response.error);
-  } else {
-    console.log('response: ');
-    console.log(response);
-    // let parsedResponse = await JSON.parse(response);
-    res.send(response);
-  }
-});
-app.post('/Login', async(req,res) =>{
-  let networkObj = await network.connectToNetwork();
-  let username = req.body.username;
-  let password = req.body.password;
-  let identity = req.body.identity;
-  const args = [username,password,identity];
-  console.log(args);
-  let response = await network.invoke(true, 'validateLogin', args);
-
-  console.log("done invoke");
-  console.log(response);
-  res.send(response);
-})
 app.post('/queryByVim', async (req, res) => {
   console.log('req.body: ');
   console.log(req.body);

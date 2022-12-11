@@ -80,7 +80,7 @@ class MedicalRecordsContract extends Contract {
             return { success: false, description: `${username} does not exist` }
         }else{
             const returnMsg = JSON.parse(privateData.toString());
-            if(returnMsg.password != password || returnMsg.identity != identity){
+            if(returnMsg.password != password || returnMsg.identity || identity){
                 return { success: false, description: `Password or identity do not match` }
             }else{
                 return { success: true, description: `${username} log in successfully` }

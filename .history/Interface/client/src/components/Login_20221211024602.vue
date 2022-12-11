@@ -2,7 +2,7 @@
   
   <div class="loginBox">
     <h1>Log in to your account</h1>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="login-ruleForm"
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="login-ruleForm"
       label-position="right">
       <el-form-item label="Identity" prop="identity">
         <el-select v-model="ruleForm.identity" placeholder="Select your identity">
@@ -83,6 +83,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.Login();
+          this.$router.push({name:'Home_page'})
         } else {
           console.log('error submit!!');
           return false;
@@ -96,21 +97,7 @@ export default {
       this.$router.push({name:'Register'})
     },
     async Login(){
-      const apiResponse = await PostsService.Login(
-        this.ruleForm.name,
-        this.ruleForm.password,
-        this.ruleForm.identity
-      )
-      console.log(apiResponse)
-      if(apiResponse.data.success == true){
-        this.$message({
-          message: apiResponse.data.description,
-          type: 'success'
-        });
-        this.$router.push({name:'Home_page'})
-      }else{
-        this.$message.error(apiResponse.data.description,);
-      }
+      const apiResponse = await PostsS
     }
   }
 }

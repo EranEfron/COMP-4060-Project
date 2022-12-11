@@ -106,7 +106,7 @@ app.post('/Login', async(req,res) =>{
   let password = req.body.password;
   let identity = req.body.identity;
   const args = [username,password,identity];
-  console.log(args);
+  console.log(args)
   let response = await network.invoke(true, 'validateLogin', args);
 
   console.log("done invoke");

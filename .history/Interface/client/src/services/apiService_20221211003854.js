@@ -17,14 +17,6 @@ export default {
       id:id
     })
   },
-  Login(name,password,identity){
-    
-    return Api().post('Login',{
-      username:name,
-      password:password,
-      identity:identity
-    })
-  },
   addCar(vin,make,model,year,milage,ownerFirstName, ownerLastName){
     return Api().post('addCar', {
       ownerFirstName:ownerFirstName,

@@ -10,7 +10,7 @@ const { fileURLToPath } = require('url')
 const gateway = new fabricNetwork.Gateway();
 
 
-exports.connectToNetwork = async function () {
+exports.connectToNetwork = async function (userName) {
   try {
     const homedir = os.homedir();
     const walletPath = path.join(homedir, '.fabric-vscode', 'v2', 'environments', '1 Org Local Fabric', 'wallets', 'Org1');
@@ -44,13 +44,13 @@ exports.connectToNetwork = async function () {
   }
 };
 
-exports.invoke = async function (isQuery, func, args) {
+exports.invoke = async function (networkObj, isQuery, func, args) {
   try {
     console.log(`isQuery: ${isQuery}, func: ${func}, args: ${args}`);
     if (isQuery === true) {
       if (args) {
         console.log('inside isQuery, args');
-        let response1 = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract', func, args, gateway);
+        let response1 = await SmartContractUtil.evaluateTransaction('MyContract', func, args, gateway);
         console.log(response1);
         console.log(`Transaction ${func} with args ${args} has been evaluated`);
         await gateway.disconnect();
@@ -70,7 +70,7 @@ exports.invoke = async function (isQuery, func, args) {
         console.log('notQuery, args');
         console.log(args);
         console.log('before submit');
-        let response = await SmartContractUtil.submitTransaction('MedicalRecordsContract', func, args, gateway);
+        let response = await SmartContractUtil.submitTransaction('MyContract', func, args, gateway);
         console.log('after submit');
         console.log(response);
         console.log(`Transaction ${func} with args ${args} has been submitted`);

@@ -82,12 +82,10 @@ app.post('/registerUser', async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   let identity = req.body.identity;
-  let id = req.body.id;
-  const args = [username,password,identity,id];
-  console.log(args)
 
+  const args = [username,password,identity];
   let response = await network.invoke(false, 'registerUser', args);
-
+  
   console.log("done invoke")
   console.log(response)
 
@@ -100,19 +98,6 @@ app.post('/registerUser', async (req, res) => {
     res.send(response);
   }
 });
-app.post('/Login', async(req,res) =>{
-  let networkObj = await network.connectToNetwork();
-  let username = req.body.username;
-  let password = req.body.password;
-  let identity = req.body.identity;
-  const args = [username,password,identity];
-  console.log(args);
-  let response = await network.invoke(true, 'validateLogin', args);
-
-  console.log("done invoke");
-  console.log(response);
-  res.send(response);
-})
 app.post('/queryByVim', async (req, res) => {
   console.log('req.body: ');
   console.log(req.body);

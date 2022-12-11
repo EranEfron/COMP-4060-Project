@@ -31,9 +31,9 @@ class SmartContractUtil {
         const network = await gateway.getNetwork('mychannel');
         let contract;
         if (contractName !== '') {
-            contract = await network.getContract('Project', contractName);
+            contract = await network.getContract('blockChainCarMilageTracker', contractName);
         } else {
-            contract = await network.getContract('Project');
+            contract = await network.getContract('blockChainCarMilageTracker');
         }
         const responseBuffer = await contract.submitTransaction(functionName, ...args);
         return responseBuffer;
@@ -44,9 +44,9 @@ class SmartContractUtil {
         const network = await gateway.getNetwork('mychannel');
         let contract;
         if (contractName !== '') {
-            contract = await network.getContract('Project', contractName);
+            contract = await network.getContract('blockChainCarMilageTracker', contractName);
         } else {
-            contract = await network.getContract('Project');
+            contract = await network.getContract('blockChainCarMilageTracker');
         }
         const responseBuffer = await contract.evaluateTransaction(functionName, ...args);
         return responseBuffer;

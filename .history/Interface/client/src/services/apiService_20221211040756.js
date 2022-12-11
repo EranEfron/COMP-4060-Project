@@ -18,7 +18,7 @@ export default {
     })
   },
   Login(name,password,identity){
-    
+    console.log("IMHERE")
     return Api().post('Login',{
       username:name,
       password:password,

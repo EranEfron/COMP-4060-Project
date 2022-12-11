@@ -101,12 +101,8 @@ export default {
         this.ruleForm.password,
         this.ruleForm.identity
       )
-      console.log(apiResponse)
+
       if(apiResponse.data.success == true){
-        this.$message({
-          message: apiResponse.data.description,
-          type: 'success'
-        });
         this.$router.push({name:'Home_page'})
       }else{
         this.$message.error(apiResponse.data.description,);

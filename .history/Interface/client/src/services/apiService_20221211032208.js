@@ -18,7 +18,6 @@ export default {
     })
   },
   Login(name,password,identity){
-    
     return Api().post('Login',{
       username:name,
       password:password,

@@ -77,10 +77,10 @@ class MedicalRecordsContract extends Contract {
         const privateData = await ctx.stub.getPrivateData(collectionName, username);
         let exist = (!!privateData && privateData.length > 0);
         if (!exist) {
-            return { success: false, description: `${username} does not exist` }
+            return { success: false, description: `The user of ${username} does not exist` }
         }else{
             const returnMsg = JSON.parse(privateData.toString());
-            if(returnMsg.password != password || returnMsg.identity != identity){
+            if(returnMsg.password != password || returnMsg.identity || identity){
                 return { success: false, description: `Password or identity do not match` }
             }else{
                 return { success: true, description: `${username} log in successfully` }

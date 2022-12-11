@@ -72,23 +72,9 @@ class MedicalRecordsContract extends Contract {
         }
         return returnMsg;
     }
-    async validateLogin(ctx,username,password,identity){
-        const collectionName = await getCollectionName(ctx);
-        const privateData = await ctx.stub.getPrivateData(collectionName, username);
-        let exist = (!!privateData && privateData.length > 0);
-        if (!exist) {
-            return { success: false, description: `${username} does not exist` }
-        }else{
-            const returnMsg = JSON.parse(privateData.toString());
-            if(returnMsg.password != password || returnMsg.identity != identity){
-                return { success: false, description: `Password or identity do not match` }
-            }else{
-                return { success: true, description: `${username} log in successfully` }
-            }
-        }
-    }
     async queryUser(ctx, username) {
         const collectionName = await getCollectionName(ctx);
+        console.log("=======================" + collectionName)
         const privateData = await ctx.stub.getPrivateData(collectionName, username);
         let exist = (!!privateData && privateData.length > 0);
         if (!exist) {
@@ -170,14 +156,10 @@ class MedicalRecordsContract extends Contract {
         const collectionName = await getCollectionName(ctx);
 
         for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
-            await ctx.stub.deletePrivateData(collectionName,key);
+            await ctx.stub.deletePrivateData(key);
         }
     }
-    async deleteByKey(ctx,key){
-        const collectionName = await getCollectionName(ctx);
-        await ctx.stub.deletePrivateData(collectionName,key);  
-    }
-  
+
 }
 
 module.exports = MedicalRecordsContract;
