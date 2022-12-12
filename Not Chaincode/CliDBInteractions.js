@@ -48,7 +48,7 @@ export async function uploadFile(patient, filename, file) {// potentially add co
         path: filename,
         content: file
     });
-    console.log({hash:fileAdded.cid.toString().slice(2,-1)})
+    console.log({hash:fileAdded.cid.toString()})
 
     var isUpdate = await contract.createTransaction("medicalRecordsExists")
         .submit(patient);
@@ -59,14 +59,14 @@ export async function uploadFile(patient, filename, file) {// potentially add co
     if(isUpdate === 'true') 
     {
         success = await contract.createTransaction("updateMedicalRecords")
-            .setTransient({"hash":fileAdded.cid.toString().slice(2,-1)})
+            .setTransient({"hash":fileAdded.cid.toString()})
             .submit(patient);
         // console.log("Updated");
     }
     else if (isUpdate === 'false')
     {
         success = await contract.createTransaction("createMedicalRecords")
-            .setTransient({"hash":fileAdded.cid.toString().slice(2,-1)})
+            .setTransient({"hash":fileAdded.cid.toString()})
             .submit(patient);
         // console.log(success.toString());
     }

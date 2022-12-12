@@ -1,6 +1,12 @@
-Hello World
+Patient: Alice
 
-const DB = require("./CliDBInteractions");
+PHIN: 123456789
 
-DB.connect("Org1Wallet", "Org1 Admin.id", "mychannel");
-DB.uploadFile("Tester", "test.txt");
+Date of Birth: 01/01/2001
+
+Allergies: peanuts
+
+Medications: amoxicillin
+
+Notes:
+    N/A
