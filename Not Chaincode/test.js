@@ -1,4 +1,4 @@
 import * as DB from './CliDBInteractions.js'
-await DB.uploadFile("Eran", "test.txt", "Please work");
-
-console.log("bye")
+// await DB.uploadFile("Eran", "test.txt", "Please work");
+await DB.findFile("Eran");
+await DB.disconnect();

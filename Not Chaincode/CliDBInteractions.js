@@ -11,7 +11,7 @@ const ipfs= await create({host:"127.0.0.1", port:5001, protocol:"http"});
 
 export async function connect() {
     try {    
-        const identityName = 'Org1 CA Admin';
+        const identityName = 'Org1 Admin';
         let connectionProfile = fs.readFileSync("./ProjectEnvironmentOrg1GatewayConnection.json", "utf8");
         connectionProfile = JSON.parse(connectionProfile);
         let wallet = await fabricNetwork.Wallets.newFileSystemWallet("./Org1Wallet");
@@ -48,51 +48,54 @@ export async function uploadFile(patient, filename, file) {// potentially add co
         path: filename,
         content: file
     });
-    console.log(fileAdded.cid)
+    console.log({hash:fileAdded.cid.toString().slice(2,-1)})
 
     var isUpdate = await contract.createTransaction("medicalRecordsExists")
         .submit(patient);
     isUpdate = isUpdate.toString();
-    console.log(isUpdate)
+    // console.log(isUpdate)
     // const isUpdate = true;
     let success;
     if(isUpdate === 'true') 
     {
         success = await contract.createTransaction("updateMedicalRecords")
-            .setTransient(fileAdded.cid)
+            .setTransient({"hash":fileAdded.cid.toString().slice(2,-1)})
             .submit(patient);
-        console.log("Updated");
+        // console.log("Updated");
     }
     else if (isUpdate === 'false')
     {
         success = await contract.createTransaction("createMedicalRecords")
-            .setTransient({"hash":fileAdded.cid})
+            .setTransient({"hash":fileAdded.cid.toString().slice(2,-1)})
             .submit(patient);
-        console.log(success.toString());
+        // console.log(success.toString());
     }
-    console.log(fileAdded.cid);//so I can find the file on my ipfs
+    // console.log(fileAdded.cid);//so I can find the file on my ipfs
     const worked = await contract.createTransaction("medicalRecordsExists")
         .submit(patient);
-    console.log(worked.toString())
+    // console.log(worked.toString())
     return success.toString();
 }
 
 export async function findFile(patient) {
-    const exists = await contract.createTransaction("medicalRecordsExists")
+    let exists = await contract.createTransaction("medicalRecordsExists")
         .submit(patient);
-    if(!exists)
+    exists = exists.toString();
+    if(exists === 'false')
     {
         return {type: "error", description:"Patient has no file"}
     }
 
-    const hash = await contract.createTransaction("readMedicalRecords")
+    let hash = await contract.createTransaction("readMedicalRecords")
             .submit(patient);
-    cosole.log("Found");
+    hash = JSON.parse(hash.toString());
+    console.log(hash);
     // node.get(hash) ----> returns file
-    // const chunks = []; -----> returns contents of file
-    // for await (const chunk of node.cat(fileAdded.cid)) {
-    //     chunks.push(chunk);
-    // }
+    const chunks = []; //-----> returns contents of file
+    for await (const chunk of ipfs.cat(hash.hash)) {
+        chunks.push(chunk);
+        print(chunk);
+    }
 
     //process chunks so it will display in UI
 }
@@ -110,4 +113,8 @@ export async function dropPatient(patient) {
 
     
     //query deleterecord, catch not exists error
+}
+
+export async function disconnect() {
+    gateway.disconnect();
 }
