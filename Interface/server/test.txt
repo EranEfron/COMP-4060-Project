@@ -1,0 +1,12 @@
+Patient: Alice test attemp1
+
+PHIN: 123456789
+
+Date of Birth: 01/01/2001
+
+Allergies: peanuts
+
+Medications: amoxicillin
+
+Notes:
+    N/A
