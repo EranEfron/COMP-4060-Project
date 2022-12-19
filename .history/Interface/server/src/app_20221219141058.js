@@ -59,7 +59,6 @@ app.post('/upload_file', async(req,res) => {
   } else {
     console.log('inside ELSE');
     res.send(response);
-    console.log("after send")
   }
 })
 

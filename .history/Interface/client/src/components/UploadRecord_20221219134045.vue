@@ -16,7 +16,7 @@
             </el-breadcrumb>
             <h1>Upload Medical record</h1>
             <el-upload action class="upload-demo" drag :limit="1" :on-change="fileChange" :auto-upload="false"
-                :on-exceed="handleExceed" :on-remove="handleRemove" ref="upload">
+                :on-exceed="handleExceed" :on-remove="handleRemove">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">Drag file here or <em>click to upload</em></div>
 
@@ -56,22 +56,18 @@ export default {
                 const reader = new FileReader();
                
                 reader.onload = async function(){
-                localStorage.setItem("file",reader.result);
-                }
-                reader.readAsText(this.file);
-
-                console.log("DADAD");
-                console.log(typeof localStorage.getItem("file"));
-                const cookie = this.$cookies.get("current_user")
+                reader.result;
+                console.log(reader.result)
                 const apiResponse = await PostsService.UploadFile(
                     cookie.name,
                     cookie.identity,
-                    localStorage.getItem("file")
-                )
-                localStorage.removeItem("file");
-                this.$refs.upload.clearFiles();
-                this.file = '';
-                console.log(apiResponse.data);
+                    reader.result
+                // )
+                }
+                reader.readAsText(this.file);
+               
+                
+
             }
         
         },

@@ -70,7 +70,6 @@ export default {
                 )
                 localStorage.removeItem("file");
                 this.$refs.upload.clearFiles();
-                this.file = '';
                 console.log(apiResponse.data);
             }
         

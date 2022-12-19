@@ -73,12 +73,12 @@ export async function uploadFile(patient, file) {
   console.log("he2")
   console.log(isexist.toString())
   console.log(isexist)
-  if (isexist.toString() == "true") {
+  if (isexist) {
     result = await contract.createTransaction("updateMedicalRecords")
       .setTransient({ "hash": Buffer.from(sendString) })
       .submit(patient);
     console.log(sendString)
-  } else if (isexist.toString() == 'false') {
+  } else if (!isexist.success) {
     console.log("in is not exist")
     result = await contract.createTransaction("createMedicalRecords")
       .setTransient({ "hash": Buffer.from(sendString) })

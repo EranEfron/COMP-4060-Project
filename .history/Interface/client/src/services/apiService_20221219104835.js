@@ -21,7 +21,7 @@ export default {
   },
   UploadFile(username,identity,file){
     console.log("in api");
-    // console.log(Buffer.from(file).toString());
+    console.log(Buffer.from(file).toString());
     console.log(typeof file);
 
     return Api().post('upload_file',{

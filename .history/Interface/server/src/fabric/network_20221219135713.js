@@ -72,21 +72,23 @@ export async function uploadFile(patient, file) {
   let contract = await network.getContract('Project', 'MedicalRecordsContract');
   console.log("he2")
   console.log(isexist.toString())
-  console.log(isexist)
-  if (isexist.toString() == "true") {
+  if (isexist.success) {
     result = await contract.createTransaction("updateMedicalRecords")
       .setTransient({ "hash": Buffer.from(sendString) })
       .submit(patient);
     console.log(sendString)
-  } else if (isexist.toString() == 'false') {
+  } else if (isexist.success) {
     console.log("in is not exist")
     result = await contract.createTransaction("createMedicalRecords")
       .setTransient({ "hash": Buffer.from(sendString) })
       .submit(patient);
     console.log(sendString)
+    // console.log(success.toString());
   }
-  console.log(result)
-  console.log("before")
+  // console.log(fileAdded.cid);//so I can find the file on my ipfs
+  const worked = await contract.createTransaction("medicalRecordsExists")
+    .submit(patient);
+  // console.log(worked.toString())
   return result;
  
 };

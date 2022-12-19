@@ -53,14 +53,6 @@ app.post('/upload_file', async(req,res) => {
   let response = await network.uploadFile(req.body.username,req.body.file);
   console.log(response);
   console.log("done");
-  if (response.error) {
-    console.log('inside eRRRRR');
-    res.send(response.error);
-  } else {
-    console.log('inside ELSE');
-    res.send(response);
-    console.log("after send")
-  }
 })
 
 app.post('/authorize_user',async(req,res) =>{

@@ -42,25 +42,17 @@ app.get('/queryAll', async (req, res) => {
 
 });
 app.post('/upload_file', async(req,res) => {
-  // console.log("in upload");
-  // console.log(typeof(req.body.username));
-  // console.log((req.body.username));
-  // console.log(req.body)
+  console.log("in upload");
+  console.log(typeof(req.body.username));
+  console.log((req.body.username));
+  console.log(req.body)
   // console.log(typeof(req.body.file.toString()));
   // console.log((req.body.file));
 
-  let networkObj = await network.connectToNetwork();
-  let response = await network.uploadFile(req.body.username,req.body.file);
-  console.log(response);
-  console.log("done");
-  if (response.error) {
-    console.log('inside eRRRRR');
-    res.send(response.error);
-  } else {
-    console.log('inside ELSE');
-    res.send(response);
-    console.log("after send")
-  }
+  // let networkObj = await network.connectToNetwork();
+  // let response = await network.uploadFile(req.body.username,req.body.file);
+  // console.log(response);
+  // console.log("done");
 })
 
 app.post('/authorize_user',async(req,res) =>{
