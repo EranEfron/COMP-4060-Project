@@ -46,7 +46,7 @@ export async function uploadFile(patient, file) {// potentially add contract as 
     //upload file to IPFS using IPFS api
     var fileAdded = await ipfs.add({
         path: "./success.txt",
-        content: file
+        content: Buffer.from(file)
     });
     
     var isUpdate = await contract.createTransaction("medicalRecordsExists")
@@ -94,16 +94,10 @@ export async function findFile(patient) {
             .submit(patient);
     hash = JSON.parse(hash.toString());
     console.log(hash);
-    // let file = await ipfs.get(hash.hash) //----> returns file
-    // console.log(file)
-
-    for await(const buf of ipfs.get(hash.hash))
+    for await(const buf of ipfs.cat(hash.hash))
     {
         console.log(Buffer.from(buf).toString())
-    }    
-    // // const buffer = await ipfs.cat(hash.hash)
-    // await fs.writeFile('./Success', new Buffer(buffer.toString()), printIss)
-    //process chunks so it will display in UI
+    }
 }
 
 export async function dropPatient(patient) {

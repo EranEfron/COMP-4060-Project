@@ -14,7 +14,9 @@ export async function connect() {
         const identityName = 'Org1 Admin';
         let connectionProfile = fs.readFileSync("./ProjectEnvironmentOrg1GatewayConnection.json", "utf8");
         connectionProfile = JSON.parse(connectionProfile);
+        console.log("1")
         let wallet = await fabricNetwork.Wallets.newFileSystemWallet("./Org1Wallet");
+        console.log("2")
 
         const discoveryAsLocalhost = true;
         const discoveryEnabled = true;
@@ -45,32 +47,29 @@ export async function connect() {
 export async function uploadFile(patient, file) {// potentially add contract as a parameter, if connection is handled elsewhere
     //upload file to IPFS using IPFS api
     var fileAdded = await ipfs.add({
+        path: "./success.txt",
         content: file
     });
-    
+    console.log({hash:fileAdded.cid.toString()})
+
     var isUpdate = await contract.createTransaction("medicalRecordsExists")
         .submit(patient);
     isUpdate = isUpdate.toString();
     // console.log(isUpdate)
     // const isUpdate = true;
     let success;
-    let sendString = fileAdded.cid.toString()
-    
-
     if(isUpdate === 'true') 
     {
         success = await contract.createTransaction("updateMedicalRecords")
-            .setTransient({"hash":Buffer.from(sendString)})
+            .setTransient({"hash":fileAdded.cid.toString()})
             .submit(patient);
-        console.log(sendString)
         // console.log("Updated");
     }
     else if (isUpdate === 'false')
     {
         success = await contract.createTransaction("createMedicalRecords")
-            .setTransient({"hash":Buffer.from(sendString)})
+            .setTransient({"hash":fileAdded.cid.toString()})
             .submit(patient);
-        console.log(sendString)
         // console.log(success.toString());
     }
     // console.log(fileAdded.cid);//so I can find the file on my ipfs
@@ -94,11 +93,11 @@ export async function findFile(patient) {
     hash = JSON.parse(hash.toString());
     console.log(hash);
     // node.get(hash) ----> returns file
-    // const chunks = []; //-----> returns contents of file
-    // for await (const chunk of ipfs.cat(hash.hash)) {
-    //     chunks.push(chunk);
-    //     print(chunk);
-    // }
+    const chunks = []; //-----> returns contents of file
+    for await (const chunk of ipfs.cat(hash.hash)) {
+        chunks.push(chunk);
+        print(chunk);
+    }
 
     //process chunks so it will display in UI
 }
