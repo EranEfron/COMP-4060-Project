@@ -1,5 +1,6 @@
 import * as DB from './CliDBInteractions.js'
 import * as fs from 'fs';
-await DB.uploadFile("Eran", "test.txt", fs.readFileSync("./test.txt"));
-// await DB.findFile("Eran");
+let succ = await DB.uploadFile("Eran", fs.readFileSync("./test.txt"));
+console.log(succ)
+await DB.findFile("Eran");
 await DB.disconnect();
