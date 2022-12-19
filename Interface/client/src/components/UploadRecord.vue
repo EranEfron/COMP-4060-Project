@@ -15,10 +15,16 @@
                 <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
             </el-breadcrumb>
             <h1>Upload Medical record</h1>
-            <el-upload action class="upload-demo" drag :limit="1" :on-change="fileChange" :auto-upload="false"
+            <el-upload action 
+            class="upload-demo" 
+            drag 
+            :limit="1" 
+            :on-change="fileChange" 
+            :auto-upload="false"
                 :on-exceed="handleExceed" :on-remove="handleRemove">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">Drag file here or <em>click to upload</em></div>
+
             </el-upload>
             <div class="submit_btn">
                 <span slot="footer" class="footer">
@@ -31,7 +37,7 @@
    
 <script>
 import PostsService from "@/services/apiService";
-
+// import axios from "axios";
 export default {
     name: "file",
     data() {
@@ -46,6 +52,9 @@ export default {
             if (this.file == '') {
                 this.$message.warning('please select a file');
             } else {
+                let formData = new FormData();
+                formData.append('file',this.file.raw);
+                
                 const cookie = this.$cookies.get("current_user")
                 const apiResponse = await PostsService.UploadFile(
                 cookie.name,
