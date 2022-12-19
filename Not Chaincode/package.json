@@ -12,6 +12,7 @@
     "fs-extra": "^11.1.0",
     "ipfs-core": "^0.17.0",
     "ipfs-http-client": "^59.0.0",
+    "npath": "^1.0.0",
     "os": "^0.1.2"
   },
   "keywords": [],

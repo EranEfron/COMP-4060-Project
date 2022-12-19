@@ -45,6 +45,7 @@ export async function connect() {
 export async function uploadFile(patient, file) {// potentially add contract as a parameter, if connection is handled elsewhere
     //upload file to IPFS using IPFS api
     var fileAdded = await ipfs.add({
+        path: "./success.txt",
         content: file
     });
     
@@ -93,13 +94,15 @@ export async function findFile(patient) {
             .submit(patient);
     hash = JSON.parse(hash.toString());
     console.log(hash);
-    // node.get(hash) ----> returns file
-    // const chunks = []; //-----> returns contents of file
-    // for await (const chunk of ipfs.cat(hash.hash)) {
-    //     chunks.push(chunk);
-    //     print(chunk);
-    // }
+    // let file = await ipfs.get(hash.hash) //----> returns file
+    // console.log(file)
 
+    for await(const buf of ipfs.get(hash.hash))
+    {
+        console.log(Buffer.from(buf).toString())
+    }    
+    // // const buffer = await ipfs.cat(hash.hash)
+    // await fs.writeFile('./Success', new Buffer(buffer.toString()), printIss)
     //process chunks so it will display in UI
 }
 
