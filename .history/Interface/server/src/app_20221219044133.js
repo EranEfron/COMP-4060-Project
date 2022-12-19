@@ -12,9 +12,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import fs from 'fs'
-import * as network from "./fabric/network.js"
-
-// let network = require('./fabric/network.js');
+let network = require('./fabric/network.js');
 
 const app = express();
 app.use(morgan('combined'));
@@ -44,26 +42,21 @@ app.get('/queryAll', async (req, res) => {
 app.post('/upload_file', async(req,res) => {
   console.log("in upload");
   console.log(typeof(req.body.username));
-  console.log((req.body.username));
-
-  console.log(typeof(req.body.file.toString()));
-  console.log((req.body.file));
-
-  // let networkObj = await network.connectToNetwork();
-  // let response = await network.uploadFile(req.body.username,req.body.file);
-  // console.log(response);
-  // console.log("done");
+  console.log(typeof(req.body.file));
+  let networkObj = await network.connectToNetwork();
+  let response = await network.uploadFile(req.body.username,req.body.file);
+  console.log(response);
+  console.log("done");
 })
 
 app.post('/authorize_user',async(req,res) =>{
   console.log("in authorize")
-  let username = req.body.username;
-  let Auth_username = req.body.Auth_username;
+  let username = req.username;
+  let Auth_username = req.Auth_username;
 
   let networkObj = await network.connectToNetwork();
   const args = [username,Auth_username];
   let response = await network.invoke(false, 'authorizeUser', args);
-  
   console.log(response);
   if (response.error) {
     console.log('inside eRRRRR');

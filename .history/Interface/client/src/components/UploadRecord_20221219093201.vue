@@ -6,8 +6,6 @@
                     <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
                     <el-menu-item index="2"><router-link to="/Upload">Upload</router-link></el-menu-item>
                     <el-menu-item index="3"><router-link to="/QueryByID">Query By ID</router-link></el-menu-item>
-                    <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
-
                 </el-menu>
             </div>
         </el-header>
@@ -16,79 +14,69 @@
                 <el-breadcrumb-item :to="{ path: '/home_page' }">Main Page</el-breadcrumb-item>
                 <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
             </el-breadcrumb>
-            <h1>Enter username to give access</h1>
-            <div class="posts">
-                <el-input v-model="input" placeholder="Enter docter's username" size="0px"></el-input>
-                <br>
-                <div class="submit_btn">
-                    <el-button type="primary" @click="submit_auth">Submit</el-button>
+            <h1>Upload Medical record</h1>
+            <el-upload action 
+            class="upload-demo" 
+            drag 
+            :limit="1" 
+            :on-change="fileChange" 
+            :auto-upload="false"
+                :on-exceed="handleExceed" :on-remove="handleRemove">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">Drag file here or <em>click to upload</em></div>
+                <el-button class="btn"><i class="el-icon-paperclip"></i>上传附件</el-button>
 
-                </div>
-
-                <h1>Current docter with access</h1>
-                <el-table :data="tableData" style="width: 100%" :default-sort="{ prop: 'time', order: 'descending' }">
-                    <el-table-column prop="name" label="Username" sortable width="180">
-                    </el-table-column>
-                    <!-- <el-table-column prop="size" label="File size" sortable width="180">
-                    </el-table-column> -->
-                    <el-table-column prop="time" sortable width="180" label="Access given time">
-                    </el-table-column>
-                    <el-table-column align="center" label="Action">
-                        <template slot-scope="scope">
-                            <el-button @click="downLoad(scope.row)" type="text">Delete</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
+            </el-upload>
+            <div class="submit_btn">
+                <span slot="footer" class="footer">
+                    <el-button type="primary" @click="submitUpload">Upload</el-button>
+                </span>
             </div>
         </el-main>
     </el-container>
 </template>
    
-
 <script>
 import PostsService from "@/services/apiService";
 
 export default {
-    name: "response",
+    name: "file",
     data() {
         return {
-            input: "",
-            tableData: [{ name: "Dr.Joe", time: "Nov,22,2022" }]
-        };
+            fileDataList: [],
+            file: ''
+        }
     },
-
     methods: {
-        async submit_auth() {
-            const cookie = this.$cookies.get("current_user")
-
-            if (this.input.length > 0) {
-                const apiResponse = await PostsService.Authorize(
+        async submitUpload() {
+            console.log(this.file)
+            if (this.file == '') {
+                this.$message.warning('please select a file');
+            } else {
+                let formData = new FormData();
+                formData.append('file',this.fi)
+                const cookie = this.$cookies.get("current_user")
+                const apiResponse = await PostsService.UploadFile(
                 cookie.name,
                 cookie.identity,
-                this.input
+                this.file
                 )
-                if (apiResponse.data.success == true) {
-                    this.$message({
-                        message: apiResponse.data.description,
-                        type: 'success'
-                    });
 
-                } else {
-                    this.$message.error(apiResponse.data.description,);
-                }
-            } else {
-                this.$message.closeAll();
-                this.$message.error("You must enter a vaild username");
             }
+
         },
-       
-        formatter(row, column) {
-            return row.address;
+        fileChange(file, fileList) {
+            this.file = file.raw;
+        },
+        handleExceed() {
+            this.$message.warning(`Limit to upload only 1 document, please merge if you have mutiple files`);
+        },
+        handleRemove(){
+            this.file = '';
         }
     }
-};
+}
 </script>
-  
 <style scoped>
 .homecontainer {
     height: 763px;
@@ -161,7 +149,7 @@ export default {
 }
 
 .submit_btn {
-    margin-top: 20px;
+    margin-top: 50px;
 }
 </style>
   

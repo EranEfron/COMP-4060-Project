@@ -16,10 +16,9 @@ import yaml from 'js-yaml';
 import URL from 'url';
 import os from 'os';
 import path from "path";
-import exp from 'constants';
-// class SmartContractUtil {
+class SmartContractUtil {
 
-    export async function getConnectionProfile() {
+    static async getConnectionProfile() {
         const homedir = os.homedir();
         const connectionProfilePath = path.join(homedir, '.fabric-vscode', 'v2', 'environments', '1 Org Local Fabric', 'gateways', 'Org1 Gateway.json');
 
@@ -31,7 +30,7 @@ import exp from 'constants';
         }
     }
 
-    export async function submitTransaction(contractName, functionName, args, gateway) {
+    static async submitTransaction(contractName, functionName, args, gateway) {
         // Submit transaction
         const network = await gateway.getNetwork('mychannel');
         let contract;
@@ -44,7 +43,7 @@ import exp from 'constants';
         return responseBuffer;
     }
 
-    export async function evaluateTransaction(contractName, functionName, args, gateway) {
+    static async evaluateTransaction(contractName, functionName, args, gateway) {
         // Evaluate transaction
         const network = await gateway.getNetwork('mychannel');
         let contract;
@@ -58,7 +57,7 @@ import exp from 'constants';
     }
 
     // Checks if URL is localhost
-    export async function isLocalhostURL(url) {
+    static isLocalhostURL(url) {
         const parsedURL = URL.parse(url);
         const localhosts = [
             'localhost',
@@ -68,7 +67,7 @@ import exp from 'constants';
     }
 
     // Used for determining whether to use discovery
-    export async function hasLocalhostURLs(connectionProfile) {
+    static hasLocalhostURLs(connectionProfile) {
         const urls = [];
         for (const nodeType of ['orderers', 'peers', 'certificateAuthorities']) {
             if (!connectionProfile[nodeType]) {
@@ -84,6 +83,6 @@ import exp from 'constants';
         }
         return urls.some((url) => this.isLocalhostURL(url));
     }
-// }
+}
 
-// module.exports = SmartContractUtil;
+module.exports = SmartContractUtil;

@@ -52,25 +52,23 @@ export async function connectToNetwork() {
 };
 
 export async function uploadFile(patient, file) {
-  console.log("in network")
+  console.log("Im in here")
   const ipfs = await create({ host: "127.0.0.1", port: 5001, protocol: "http" });
+  console.log("done1")
   const patientArg = [patient]
 
   // var isUpdate = await contract.createTransaction("medicalRecordsExists")
   //   .submit(patient);
   let isexist = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract', 'medicalRecordsExists', patientArg, gateway);
   console.log("exist " + isexist.toString())
-  console.log(file)
-  console.log(typeof file);
+
   var fileAdded = await ipfs.add({
     content: file
   });
   let result;
   let sendString = fileAdded.cid.toString()
-  console.log("he")
   const network = await gateway.getNetwork('mychannel');
   let contract = await network.getContract('Project', 'MedicalRecordsContract');
-  console.log("he2")
 
   if (isexist) {
     success = await contract.createTransaction("updateMedicalRecords")
@@ -89,10 +87,24 @@ export async function uploadFile(patient, file) {
     .submit(patient);
   // console.log(worked.toString())
   return success.toString();
- 
+  // let success;
+  // let sendString = fileAdded.cid.toString();
+  // if (isUpdate === 'true') {
+  //   success = await contract.createTransaction("updateMedicalRecords")
+  //     .setTransient({ "hash": Buffer.from(sendString) })
+  //     .submit(patient);
+  //   console.log(sendString)
+  // }
+  // else if (isUpdate === 'false') {
+  //   success = await contract.createTransaction("createMedicalRecords")
+  //     .setTransient({ "hash": Buffer.from(sendString) })
+  //     .submit(patient);
+  // }
+  // const worked = await contract.createTransaction("medicalRecordsExists")
+  //   .submit(patient);
+  // return success.toString();
 };
 export async function invoke(isQuery, func, args) {
-  
   try {
     console.log(`isQuery: ${isQuery}, func: ${func}, args: ${args}`);
     if (isQuery === true) {
@@ -102,6 +114,7 @@ export async function invoke(isQuery, func, args) {
         console.log(response1);
         console.log(`Transaction ${func} with args ${args} has been evaluated`);
         await gateway.disconnect();
+
         return response1;
 
       } else {

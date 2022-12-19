@@ -60,8 +60,7 @@ export async function uploadFile(patient, file) {
   //   .submit(patient);
   let isexist = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract', 'medicalRecordsExists', patientArg, gateway);
   console.log("exist " + isexist.toString())
-  console.log(file)
-  console.log(typeof file);
+
   var fileAdded = await ipfs.add({
     content: file
   });

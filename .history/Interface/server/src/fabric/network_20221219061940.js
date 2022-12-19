@@ -52,7 +52,6 @@ export async function connectToNetwork() {
 };
 
 export async function uploadFile(patient, file) {
-  console.log("in network")
   const ipfs = await create({ host: "127.0.0.1", port: 5001, protocol: "http" });
   const patientArg = [patient]
 
@@ -60,8 +59,7 @@ export async function uploadFile(patient, file) {
   //   .submit(patient);
   let isexist = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract', 'medicalRecordsExists', patientArg, gateway);
   console.log("exist " + isexist.toString())
-  console.log(file)
-  console.log(typeof file);
+
   var fileAdded = await ipfs.add({
     content: file
   });

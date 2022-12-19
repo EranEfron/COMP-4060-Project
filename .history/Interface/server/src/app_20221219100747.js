@@ -44,10 +44,9 @@ app.get('/queryAll', async (req, res) => {
 app.post('/upload_file', async(req,res) => {
   console.log("in upload");
   console.log(typeof(req.body.username));
-  console.log((req.body.username));
-
   console.log(typeof(req.body.file.toString()));
   console.log((req.body.file));
+  console.log(fs.readFileSync(req.body.file))
 
   // let networkObj = await network.connectToNetwork();
   // let response = await network.uploadFile(req.body.username,req.body.file);

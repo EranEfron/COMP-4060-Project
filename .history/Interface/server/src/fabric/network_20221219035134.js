@@ -2,22 +2,17 @@
 'use strict';
 
 
-// const fabricNetwork = require('fabric-network');
-// const SmartContractUtil = require('./js-smart-contract-util.js');
-// const os = require('os');
-// const path = require('path');
-// const { fileURLToPath } = require('url')
-// const gateway = new fabricNetwork.Gateway();
-// const ipgsClient = require("ipfs-http-client")
-// import {create} from "ipfs-http-client";
-import fabricNetwork from 'fabric-network';
-import * as SmartContractUtil from './js-smart-contract-util.js';
-import os from 'os';
-import path from 'path';
+const fabricNetwork = require('fabric-network');
+const SmartContractUtil = require('./js-smart-contract-util.js');
+const os = require('os');
+const path = require('path');
+const { fileURLToPath } = require('url')
 const gateway = new fabricNetwork.Gateway();
-import { create } from "ipfs-http-client";
+import {create} from "ipfs-http-client";
+const ipfs= await create({host:"127.0.0.1", port:5001, protocol:"http"});
 
-export async function connectToNetwork() {
+
+exports.connectToNetwork = async function () {
   try {
     const homedir = os.homedir();
     const walletPath = path.join(homedir, '.fabric-vscode', 'v2', 'environments', '1 Org Local Fabric', 'wallets', 'Org1');
@@ -51,48 +46,34 @@ export async function connectToNetwork() {
   }
 };
 
-export async function uploadFile(patient, file) {
-  console.log("in network")
-  const ipfs = await create({ host: "127.0.0.1", port: 5001, protocol: "http" });
-  const patientArg = [patient]
+exports.uploadFile = async function(patient, file){
 
-  // var isUpdate = await contract.createTransaction("medicalRecordsExists")
-  //   .submit(patient);
-  let isexist = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract', 'medicalRecordsExists', patientArg, gateway);
-  console.log("exist " + isexist.toString())
-  console.log(file)
-  console.log(typeof file);
   var fileAdded = await ipfs.add({
     content: file
   });
-  let result;
-  let sendString = fileAdded.cid.toString()
-  console.log("he")
-  const network = await gateway.getNetwork('mychannel');
-  let contract = await network.getContract('Project', 'MedicalRecordsContract');
-  console.log("he2")
-
-  if (isexist) {
-    success = await contract.createTransaction("updateMedicalRecords")
-      .setTransient({ "hash": Buffer.from(sendString) })
-      .submit(patient);
-    console.log(sendString)
-  } else if (isUpdate === 'false') {
-    success = await contract.createTransaction("createMedicalRecords")
-      .setTransient({ "hash": Buffer.from(sendString) })
-      .submit(patient);
-    console.log(sendString)
-    // console.log(success.toString());
-  }
-  // console.log(fileAdded.cid);//so I can find the file on my ipfs
-  const worked = await contract.createTransaction("medicalRecordsExists")
-    .submit(patient);
-  // console.log(worked.toString())
-  return success.toString();
- 
+  // var isUpdate = await contract.createTransaction("medicalRecordsExists")
+  //   .submit(patient);
+  var isexist = await SmartContractUtil.evaluateTransaction('MedicalRecordsContract','medicalRecordsExists',patient,gateway);
+  console.log(isexist)
+  // isUpdate = isUpdate.toString();
+  // let success;
+  // let sendString = fileAdded.cid.toString();
+  // if (isUpdate === 'true') {
+  //   success = await contract.createTransaction("updateMedicalRecords")
+  //     .setTransient({ "hash": Buffer.from(sendString) })
+  //     .submit(patient);
+  //   console.log(sendString)
+  // }
+  // else if (isUpdate === 'false') {
+  //   success = await contract.createTransaction("createMedicalRecords")
+  //     .setTransient({ "hash": Buffer.from(sendString) })
+  //     .submit(patient);
+  // }
+  // const worked = await contract.createTransaction("medicalRecordsExists")
+  //   .submit(patient);
+  // return success.toString();
 };
-export async function invoke(isQuery, func, args) {
-  
+exports.invoke = async function (isQuery, func, args) {
   try {
     console.log(`isQuery: ${isQuery}, func: ${func}, args: ${args}`);
     if (isQuery === true) {
@@ -102,6 +83,7 @@ export async function invoke(isQuery, func, args) {
         console.log(response1);
         console.log(`Transaction ${func} with args ${args} has been evaluated`);
         await gateway.disconnect();
+
         return response1;
 
       } else {

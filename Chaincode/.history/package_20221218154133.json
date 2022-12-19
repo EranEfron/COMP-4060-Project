@@ -1,6 +1,6 @@
 {
   "name": "Project",
-  "version": "0.1.5",
+  "version": "0.0.8",
   "description": "My Private Data Smart Contract",
   "main": "index.js",
   "engines": {

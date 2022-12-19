@@ -48,9 +48,9 @@ class MedicalRecordsContract extends Contract {
             const collectionName = await getCollectionName(ctx);
             let privateStringData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
             let privateData = JSON.parse(privateStringData);
-            let currentTime = new Date();
-            // privateData.givenTime = currentTime;
-            privateData.Authorized_list.push({"name":auth_name, "time":currentTime});
+            // let new_privateData = privateData.Authorized_list;
+            // new_privateData.push(auth_name);
+            privateData.Authorized_list.push(auth_name);
             await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateData)));
             return { success: true, description: 'Access is given successfully' }
         } catch (error) {

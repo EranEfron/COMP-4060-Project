@@ -20,10 +20,6 @@ export default {
     }
   },
   UploadFile(username,identity,file){
-    console.log("in api");
-    console.log(file);
-    console.log(typeof file);
-
     return Api().post('upload_file',{
       username:username+ '\'s record',
       identity:identity,

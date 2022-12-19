@@ -48,9 +48,9 @@ class MedicalRecordsContract extends Contract {
             const collectionName = await getCollectionName(ctx);
             let privateStringData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
             let privateData = JSON.parse(privateStringData);
-            let currentTime = new Date();
-            // privateData.givenTime = currentTime;
-            privateData.Authorized_list.push({"name":auth_name, "time":currentTime});
+            // let new_privateData = privateData.Authorized_list;
+            // new_privateData.push(auth_name);
+            privateData.Authorized_list.push(auth_name);
             await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateData)));
             return { success: true, description: 'Access is given successfully' }
         } catch (error) {
@@ -65,7 +65,7 @@ class MedicalRecordsContract extends Contract {
             return { success: false, description: `The medical record of ID ${medicalRecordsId} does not exist` }
         }
         const result = JSON.parse(privateData.toString());
-        const returnMsg = result.Authorized_list;
+        const returnMsg = privateData.Authorized_list;
         return returnMsg;
     }
     async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient

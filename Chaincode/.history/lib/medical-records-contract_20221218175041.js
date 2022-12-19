@@ -39,34 +39,23 @@ class MedicalRecordsContract extends Contract {
         await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateAsset)));
         return { success: true, description: 'Successfully added record reference to blockchain' }
     }
-    async authorizeUser(ctx, medicalRecordsId, auth_name) {
+    async authorizeUser(ctx,medicalRecordsId,auth_name){
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
-        try {
-            if (!exists) {
-                return { success: false, description: `The asset medical records ${medicalRecordsId} not exist, You must upload a file first` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
-            }
-            const collectionName = await getCollectionName(ctx);
-            let privateStringData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
-            let privateData = JSON.parse(privateStringData);
-            let currentTime = new Date();
-            // privateData.givenTime = currentTime;
-            privateData.Authorized_list.push({"name":auth_name, "time":currentTime});
-            await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateData)));
-            return { success: true, description: 'Access is given successfully' }
-        } catch (error) {
-            return { success: false, description: error }
+        if (!exists) {
+            return { success: false, description: `The asset medical records ${medicalRecordsId} not exist, You must upload a file first` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
         }
-    }
-    async queryAuthorizeUser(ctx,medicalRecordsId){
         const collectionName = await getCollectionName(ctx);
-        const privateData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
-        let exist = (!!privateData && privateData.length > 0);
-        if (!exist) {
-            return { success: false, description: `The medical record of ID ${medicalRecordsId} does not exist` }
-        }
-        const result = JSON.parse(privateData.toString());
-        const returnMsg = result.Authorized_list;
-        return returnMsg;
+        let privateData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
+        console.log("+++++++++++++++++++++++++++++")
+        console.log(privateData)
+        console.log(privateData.Authorized_list)
+        console.log(typeof privateData.Authorized_list)
+        let new_privateData = privateData.Authorized_list;
+        new_privateData.push(auth_name);
+        privateData.Authorized_list = new_privateData;
+
+        await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(privateData)));
+
     }
     async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
@@ -80,7 +69,7 @@ class MedicalRecordsContract extends Contract {
         // console.log("!!!!" + typeof privateData)
         return privateDataString;
     }
-    async registerUser(ctx, username, password, identity, id) {
+    async registerUser(ctx, username, password, identity,id) {
         let returnMsg = { success: false, description: 'Register Failled, username have already exist' }
         try {
             const collectionName = await getCollectionName(ctx);
@@ -91,7 +80,7 @@ class MedicalRecordsContract extends Contract {
                 let User_info = {
                     password: password,
                     identity: identity,
-                    id: id
+                    id:id
                 };
                 await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(User_info)));
                 returnMsg = { success: true, description: 'Registered successfully' }
@@ -101,21 +90,21 @@ class MedicalRecordsContract extends Contract {
         }
         return returnMsg;
     }
-    async validateLogin(ctx, username, password, identity) {
+    async validateLogin(ctx,username,password,identity){
         const collectionName = await getCollectionName(ctx);
         const privateData = await ctx.stub.getPrivateData(collectionName, username);
         let exist = (!!privateData && privateData.length > 0);
         if (!exist) {
             return { success: false, description: `${username} does not exist` }
-        } else {
+        }else{
             const returnMsg = JSON.parse(privateData.toString());
-            if (returnMsg.password != password || returnMsg.identity != identity) {
+            if(returnMsg.password != password || returnMsg.identity != identity){
                 return { success: false, description: `Password or identity do not match` }
-            } else {
-                if (returnMsg.identity == "Patient") {
-                    return { success: true, description: `${username} log in successfully`, id: returnMsg.id }
-                } else {
-                    return { success: true, description: `${username} log in successfully` }
+            }else{
+                if (returnMsg.identity == "Patient"){
+                return { success: true, description: `${username} log in successfully`, id:returnMsg.id }
+                }else{
+                    return { success: true, description: `${username} log in successfully`}
                 }
             }
         }
@@ -130,7 +119,7 @@ class MedicalRecordsContract extends Contract {
         const returnMsg = JSON.parse(privateData.toString());
         return returnMsg;
     }
-
+    
     async updateMedicalRecords(ctx, medicalRecordsId) {
         const exists = await this.medicalRecordsExists(ctx, medicalRecordsId);
         if (!exists) {
@@ -183,7 +172,7 @@ class MedicalRecordsContract extends Contract {
         const allResults = [];
         const collectionName = await getCollectionName(ctx);
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName, startKey, endKey)) {
+        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
             const strValue = Buffer.from(value).toString('utf8');
             let record;
             try {
@@ -203,15 +192,15 @@ class MedicalRecordsContract extends Contract {
         const endKey = '';
         const collectionName = await getCollectionName(ctx);
 
-        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName, startKey, endKey)) {
-            await ctx.stub.deletePrivateData(collectionName, key);
+        for await (const { key, value } of ctx.stub.getPrivateDataByRange(collectionName,startKey, endKey)) {
+            await ctx.stub.deletePrivateData(collectionName,key);
         }
     }
-    async deleteByKey(ctx, key) {
+    async deleteByKey(ctx,key){
         const collectionName = await getCollectionName(ctx);
-        await ctx.stub.deletePrivateData(collectionName, key);
+        await ctx.stub.deletePrivateData(collectionName,key);  
     }
-
+  
 }
 
 module.exports = MedicalRecordsContract;
