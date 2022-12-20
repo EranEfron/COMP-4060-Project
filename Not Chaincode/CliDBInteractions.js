@@ -94,10 +94,13 @@ export async function findFile(patient) {
             .submit(patient);
     hash = JSON.parse(hash.toString());
     console.log(hash);
+    let ret = '';
     for await(const buf of ipfs.cat(hash.hash))
     {
-        console.log(Buffer.from(buf).toString())
+        // console.log(Buffer.from(buf).toString())
+        ret += Buffer.from(buf).toString()
     }
+    return ret;
 }
 
 export async function dropPatient(patient) {
