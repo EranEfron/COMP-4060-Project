@@ -9,16 +9,9 @@ export default {
       ownerLastName:ownerLastName
     })
   },
-  delete_auth(username,target_username){
+  delete_auth(username){
     return Api().post('delete_auth',{
-      username:username+ '\'s record',
-      target_username:target_username
-    })
-  },
-  download(filename){
-    return Api().post('download',
-    {
-      filename: filename + '\'s record'
+      username:username
     })
   },
   Authorize(username,identity,Auth_username){

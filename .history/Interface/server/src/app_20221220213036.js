@@ -42,6 +42,12 @@ app.get('/queryAll', async (req, res) => {
 
 });
 app.post('/upload_file', async(req,res) => {
+  // console.log("in upload");
+  // console.log(typeof(req.body.username));
+  // console.log((req.body.username));
+  // console.log(req.body)
+  // console.log(typeof(req.body.file.toString()));
+  // console.log((req.body.file));
 
   let networkObj = await network.connectToNetwork();
   let response = await network.uploadFile(req.body.username,req.body.file);
@@ -56,9 +62,7 @@ app.post('/upload_file', async(req,res) => {
     console.log("after send")
   }
 })
-app.post('/download', async(req,res) =>{
-  
-});
+
 app.post('/authorize_user',async(req,res) =>{
   console.log("in authorize")
   let username = req.body.username;
@@ -140,7 +144,6 @@ app.post('/registerUser', async (req, res) => {
     res.send(response);
   }
 });
-
 app.post('/Login', async(req,res) =>{
   let networkObj = await network.connectToNetwork();
   let username = req.body.username;
@@ -166,9 +169,8 @@ app.post('/queryCurrent_Auth',async (req,res) =>{
     res.send(response);
   }
 })
-
 app.post('/delete_auth',async(req,res) => {
-  let networkObj = await network.connectToNetwork();
+  let network = await network.connectToNetwork();
   const qArgs = [req.body.username,req.body.target_username];
   let response = await network.invoke(false,'deleteAuthorizeUser',qArgs);
   if (response.error) {

@@ -5,7 +5,7 @@
                 <el-menu class="el-menu-demo" mode="horizontal" text-color="#333" active-text-color="#545c64">
                     <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
                     <el-menu-item index="2"><router-link to="/Upload">Upload</router-link></el-menu-item>
-                    <el-menu-item index="3"><router-link to="/Download">Download</router-link></el-menu-item>
+                    <el-menu-item index="3"><router-link to="/QueryByID">Query By ID</router-link></el-menu-item>
                     <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
 
                 </el-menu>
@@ -95,15 +95,10 @@ export default {
                         message: apiResponse.data.description,
                         type: 'success'
                     });
-                    
+                    await this.query_auth();
                 } else {
-                    this.$message({
-                        showClose: true,
-                        message: apiResponse.data.description,
-                        type: 'error'
-                    });
+                    this.$message.error(apiResponse.data.description);
                 }
-                this.query_auth();
            console.log(apiResponse.data);
         },
         async submit_auth() {
@@ -122,19 +117,14 @@ export default {
                         message: apiResponse.data.description,
                         type: 'success'
                     });
+
                 } else {
                     this.$message.error(apiResponse.data.description);
                 }
-                this.query_auth();
             } else {
                 this.$message.closeAll();
-                this.$message({
-                        showClose: true,
-                        message: "You must enter a vaild username",
-                        type: 'error'
-                    });
+                this.$message.error("You must enter a vaild username");
             }
-    
         },
        
         formatter(row, column) {

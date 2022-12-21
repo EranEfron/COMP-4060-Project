@@ -66,7 +66,7 @@ class MedicalRecordsContract extends Contract {
             console.log("exists1");
             console.log(exists);
             if (!exists) {
-                return { success: false, description: `The medical records ${medicalRecordsId} not exist, You must upload a file first` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
+                return { success: false, description: `The asset medical records ${medicalRecordsId} not exist, You must upload a file first` }// throw new Error(`The asset medical records ${medicalRecordsId} already exists`);
             }
             const collectionName = await getCollectionName(ctx);
             let privateStringData = await ctx.stub.getPrivateData(collectionName, medicalRecordsId);
@@ -98,7 +98,7 @@ class MedicalRecordsContract extends Contract {
         const privateData = await ctx.stub.getPrivateData(collectionName, username);
         let exist = (!!privateData && privateData.length > 0);
         if (!exist) {
-            return { success: false, description: `The medical record does not exist, You must upload a file first` }
+            return { success: false, description: `The medical record of ID ${medicalRecordsId} does not exist` }
         }
         let result = JSON.parse(privateData.toString());
         let auth_list = result.Authorized_list;
@@ -109,12 +109,11 @@ class MedicalRecordsContract extends Contract {
                 userexist = true;
             }
         }
-        if (userexist == true){
+        if (userexist = true){
             result.Authorized_list = auth_list
-            await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(result)));
-            return { success: true, description: `The user ${target_username} is now not accable to your record` }
+            await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(result)));
         }else{
-            return { success: false, description: `The user you willing to delete is never authorized` }
+            return { success: false, description: `The user you will to delete is never authorized` }
         }
     }
     async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient

@@ -63,7 +63,7 @@ export async function uploadFile(patient, file) {// potentially add contract as 
         success = await contract.createTransaction("updateMedicalRecords")
             .setTransient({"hash":Buffer.from(sendString)})
             .submit(patient);
-        // console.log(sendString)
+        console.log(sendString)
         // console.log("Updated");
     }
     else if (isUpdate === 'false')
@@ -71,7 +71,7 @@ export async function uploadFile(patient, file) {// potentially add contract as 
         success = await contract.createTransaction("createMedicalRecords")
             .setTransient({"hash":Buffer.from(sendString)})
             .submit(patient);
-        // console.log(sendString)
+        console.log(sendString)
         // console.log(success.toString());
     }
     // console.log(fileAdded.cid);//so I can find the file on my ipfs

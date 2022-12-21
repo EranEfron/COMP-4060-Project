@@ -109,10 +109,9 @@ class MedicalRecordsContract extends Contract {
                 userexist = true;
             }
         }
-        if (userexist == true){
+        if (userexist = true){
             result.Authorized_list = auth_list
             await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(result)));
-            return { success: true, description: `The user ${target_username} is now not accable to your record` }
         }else{
             return { success: false, description: `The user you willing to delete is never authorized` }
         }

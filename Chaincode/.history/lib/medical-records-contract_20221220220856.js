@@ -109,12 +109,11 @@ class MedicalRecordsContract extends Contract {
                 userexist = true;
             }
         }
-        if (userexist == true){
+        if (userexist = true){
             result.Authorized_list = auth_list
-            await ctx.stub.putPrivateData(collectionName, username, Buffer.from(JSON.stringify(result)));
-            return { success: true, description: `The user ${target_username} is now not accable to your record` }
+            await ctx.stub.putPrivateData(collectionName, medicalRecordsId, Buffer.from(JSON.stringify(result)));
         }else{
-            return { success: false, description: `The user you willing to delete is never authorized` }
+            return { success: false, description: `The user you will to delete is never authorized` }
         }
     }
     async readMedicalRecords(ctx, medicalRecordsId) { // get back teh cid of the file relating to a patient

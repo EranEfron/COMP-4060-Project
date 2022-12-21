@@ -5,7 +5,7 @@
                 <el-menu class="el-menu-demo" mode="horizontal" text-color="#333" active-text-color="#545c64">
                     <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
                     <el-menu-item index="2"><router-link to="/Upload">Upload</router-link></el-menu-item>
-                    <el-menu-item index="3"><router-link to="/Download">Download</router-link></el-menu-item>
+                    <el-menu-item index="3"><router-link to="/QueryByID">Query By ID</router-link></el-menu-item>
                     <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
 
                 </el-menu>

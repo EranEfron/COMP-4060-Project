@@ -15,12 +15,6 @@ export default {
       target_username:target_username
     })
   },
-  download(filename){
-    return Api().post('download',
-    {
-      filename: filename + '\'s record'
-    })
-  },
   Authorize(username,identity,Auth_username){
     if (identity != "Patient"){
      return { success: fasle, description: 'You must be a patient to give access'}
