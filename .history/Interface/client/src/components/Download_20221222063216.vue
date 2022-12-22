@@ -39,12 +39,10 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog class ="" title= "Record" :visible.sync="dialogVisible" fullscreen:true >
+      <el-dialog title= "Record" :visible.sync="dialogVisible" width="30%" >
 
         <span v-if = "recordData">
-          <div class="dialog-innertext">
-            <b>{{ recordData }}</b>
-          </div>
+          <b id="msgBox">{{ recordData }}</b>
         </span>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -112,6 +110,29 @@ export default {
           }
         }
       }
+
+      // this.tableData = [];
+      // if (!this.input.ID) {
+      //   let response = 'Please enter a ID to query for.';
+      //   this.input.data = response;
+      // } else {
+      //   const apiResponse = await PostsService.queryByID(this.input.ID);
+      //   let apiData = apiResponse.data;
+      //   if (apiData != "The car with vin 12 does not exist") {
+      //     let record_length = apiData.timeStamp.length;
+      //     for (let i = 0; i < record_length; i++) {
+      //       let data = {
+      //         date: apiData.timeStamp[i],
+      //         name: apiData.ownerFirstName[i] + " " + apiData.ownerLastName[i],
+      //         milage: apiData.milage[i]
+      //       }
+      //       this.tableData.push(data);
+      //     }
+      //     this.input.data = `Car with vin ${apiData.vin} is queried successfully`;
+      //   } else {
+      //     this.input.data = apiData;
+      //   }
+      // }
     },
     async Preview(row) {
 
@@ -131,7 +152,6 @@ export default {
         if (apiResponse.data.success == true) {
           console.log(apiResponse.data.description)
           this.dialogVisible = true;
-          this.recordData = apiResponse.data.description;
         } else {
           this.$message({
             showClose: true,
@@ -155,15 +175,7 @@ export default {
   width: 100%;
 
 }
-.dialog-innertext{
-  white-space:pre-wrap;
-}
-.roll-dialog{
-    padding: 3px 30px;
-    overflow-y: scroll;
-    height: 400px;
 
-}
 .head {
   display: flex;
   flex-direction: row;

@@ -42,9 +42,7 @@
       <el-dialog class ="" title= "Record" :visible.sync="dialogVisible" fullscreen:true >
 
         <span v-if = "recordData">
-          <div class="dialog-innertext">
-            <b>{{ recordData }}</b>
-          </div>
+          <b>{{ recordData }}</b>
         </span>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -156,7 +154,7 @@ export default {
 
 }
 .dialog-innertext{
-  white-space:pre-wrap;
+  white-space: :pre-wrap;
 }
 .roll-dialog{
     padding: 3px 30px;

@@ -39,12 +39,10 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog class ="" title= "Record" :visible.sync="dialogVisible" fullscreen:true >
+      <el-dialog class ="" title= "Record" :visible.sync="dialogVisible" width="30%" >
 
         <span v-if = "recordData">
-          <div class="dialog-innertext">
-            <b>{{ recordData }}</b>
-          </div>
+          <b >{{ recordData }}</b>
         </span>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -154,9 +152,6 @@ export default {
   height: 763px;
   width: 100%;
 
-}
-.dialog-innertext{
-  white-space:pre-wrap;
 }
 .roll-dialog{
     padding: 3px 30px;

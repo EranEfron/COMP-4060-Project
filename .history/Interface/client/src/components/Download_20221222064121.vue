@@ -156,7 +156,7 @@ export default {
 
 }
 .dialog-innertext{
-  white-space:pre-wrap;
+  white-space: :pre-wrap;
 }
 .roll-dialog{
     padding: 3px 30px;
