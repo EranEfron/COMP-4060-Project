@@ -1,4 +1,4 @@
-Patient: Alice
+Patient: Alice 
 
 PHIN: 123456789
 
@@ -8,5 +8,4 @@ Allergies: peanuts
 
 Medications: amoxicillin
 
-Notes:
-    N/A
+Notes:N/A

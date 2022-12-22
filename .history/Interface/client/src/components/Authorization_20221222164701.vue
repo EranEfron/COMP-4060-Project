@@ -1,4 +1,3 @@
-<!-- user authorization interface -->
 <template >
     <el-container class="homecontainer">
         <el-header>
@@ -127,6 +126,7 @@ export default {
                     });
                 }
                 this.query_auth();
+                console.log(apiResponse.data);
             }
         },
         async submit_auth() {
@@ -146,6 +146,7 @@ export default {
                         cookie.identity,
                         this.input
                     )
+                    console.log(apiResponse.data)
                     if (apiResponse.data.success == true) {
                         this.$message({
                             showClose: true,
@@ -209,6 +210,7 @@ export default {
     text-align: center;
     line-height: 10px;
 }
+
 
 .submit_btn {
     margin-top: 20px;

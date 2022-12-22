@@ -1,4 +1,3 @@
-<!-- File download page -->
 <template >
   <el-container class="homecontainer">
     <el-header>
@@ -48,7 +47,7 @@
           </div>
         </span>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">Done</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
     </el-main>

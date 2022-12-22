@@ -1,24 +1,30 @@
-//handle the recieve message sended from client and interact with fabric network
 'use strict';
-
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const morgan = require('morgan');
+// const util = require('util');
+// const path = require('path');
+// const fs = require('fs');
 import express from 'express';
-import bodyParser from 'body-parser';
+import bodyParser from'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import fs from 'fs'
 import * as network from "./fabric/network.js"
 
+// let network = require('./fabric/network.js');
 
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/upload_file', async (req, res) => {
+app.post('/upload_file', async(req,res) => {
 
   let networkObj = await network.connectToNetwork();
-  let response = await network.uploadFile(req.body.patientname, req.body.username, req.body.file);
+  let response = await network.uploadFile(req.body.patientname,req.body.username,req.body.file);
   console.log(response);
   console.log("done");
   if (response.error) {
@@ -27,11 +33,14 @@ app.post('/upload_file', async (req, res) => {
   } else {
     console.log('inside ELSE');
     res.send(response);
+    console.log("after send")
   }
 })
-app.post('/previewFile', async (req, res) => {
+app.post('/previewFile',async(req,res) =>{
   let networkObj = await network.connectToNetwork();
+  console.log(req.body)
   let response = await network.getFile(req.body.filename);
+  console.log(response)
   if (response.error) {
     console.log('inside eRRRRR');
     res.send(response.error);
@@ -40,11 +49,11 @@ app.post('/previewFile', async (req, res) => {
     res.send(response);
   }
 })
-app.post('/getRecord', async (req, res) => {
+app.post('/getRecord', async(req,res) =>{
   let networkObj = await network.connectToNetwork();
   const args = [req.body.filename, req.body.requestor];
-  let response = await network.invoke(true, 'queryRecords', args);
-
+  let response = await network.invoke(true,'queryRecords',args);
+  
   if (response.error) {
     console.log('inside eRRRRR');
     res.send(response.error);
@@ -54,15 +63,16 @@ app.post('/getRecord', async (req, res) => {
   }
 });
 
-app.post('/authorize_user', async (req, res) => {
+app.post('/authorize_user',async(req,res) =>{
   console.log("in authorize")
   let username = req.body.username;
   let Auth_username = req.body.Auth_username;
 
   let networkObj = await network.connectToNetwork();
-  const args = [username, Auth_username];
+  const args = [username,Auth_username];
   let response = await network.invoke(false, 'authorizeUser', args);
-
+  
+  console.log(response);
   if (response.error) {
     console.log('inside eRRRRR');
     res.send(response.error);
@@ -91,27 +101,33 @@ app.post('/update', async (req, res) => {
 
 app.post('/registerUser', async (req, res) => {
   let networkObj = await network.connectToNetwork()
+  console.log ("=====Network Obj" + networkObj);
   let username = req.body.username;
   let password = req.body.password;
   let identity = req.body.identity;
   let id = req.body.id;
-  const args = [username, password, identity, id];
+  const args = [username,password,identity,id];
+  console.log(args)
 
   let response = await network.invoke(false, 'registerUser', args);
+
+  console.log("done invoke")
+  console.log(response)
 
   if (response.error) {
     res.send(response.error);
   } else {
     console.log('response: ');
     console.log(response);
+    // let parsedResponse = await JSON.parse(response);
     res.send(response);
   }
 });
-app.post('/queryUser', async (req, res) => {
+app.post('/queryUser', async(req,res) =>{
   let networkObj = await network.connectToNetwork();
   let username = req.body.username;
   const args = [username];
-  let response = await network.invoke(true, 'queryUser', args);
+  let response = await network.invoke(true,'queryUser',args);
   if (response.error) {
     console.log('inside eRRRRR');
     res.send(response.error);
@@ -120,17 +136,20 @@ app.post('/queryUser', async (req, res) => {
     res.send(response);
   }
 })
-app.post('/Login', async (req, res) => {
+app.post('/Login', async(req,res) =>{
   let networkObj = await network.connectToNetwork();
   let username = req.body.username;
   let password = req.body.password;
   let identity = req.body.identity;
-  const args = [username, password, identity];
+  const args = [username,password,identity];
+  console.log(args);
   let response = await network.invoke(true, 'validateLogin', args);
 
+  console.log("done invoke");
+  console.log(response);
   res.send(response);
 })
-app.post('/queryCurrent_Auth', async (req, res) => {
+app.post('/queryCurrent_Auth',async (req,res) =>{
   let networkObj = await network.connectToNetwork();
   const qArgs = [req.body.username];
   let response = await network.invoke(true, 'queryAuthorizeUser', qArgs);
@@ -143,10 +162,10 @@ app.post('/queryCurrent_Auth', async (req, res) => {
   }
 })
 
-app.post('/delete_auth', async (req, res) => {
+app.post('/delete_auth',async(req,res) => {
   let networkObj = await network.connectToNetwork();
-  const qArgs = [req.body.username, req.body.target_username];
-  let response = await network.invoke(false, 'deleteAuthorizeUser', qArgs);
+  const qArgs = [req.body.username,req.body.target_username];
+  let response = await network.invoke(false,'deleteAuthorizeUser',qArgs);
   if (response.error) {
     console.log('inside eRRRRR');
     res.send(response.error);

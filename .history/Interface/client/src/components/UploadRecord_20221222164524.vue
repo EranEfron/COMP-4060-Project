@@ -1,4 +1,3 @@
-<!-- file upload page -->
 <template >
     <el-container class="homecontainer">
         <el-header>
@@ -184,7 +183,14 @@ export default {
     line-height: 10px;
 }
 
+.el-dropdown-link {
+    cursor: pointer;
+    color: #010e1b;
+}
 
+.el-icon-arrow-down {
+    font-size: 12px;
+}
 
 .submit_btn {
     margin-top: 50px;

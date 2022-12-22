@@ -1,4 +1,3 @@
-<!-- file upload page -->
 <template >
     <el-container class="homecontainer">
         <el-header>

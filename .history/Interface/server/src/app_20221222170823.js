@@ -1,4 +1,3 @@
-//handle the recieve message sended from client and interact with fabric network
 'use strict';
 
 import express from 'express';
@@ -9,6 +8,7 @@ import path from 'path';
 import fs from 'fs'
 import * as network from "./fabric/network.js"
 
+// let network = require('./fabric/network.js');
 
 const app = express();
 app.use(morgan('combined'));

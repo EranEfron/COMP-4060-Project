@@ -1,4 +1,3 @@
-<!-- user authorization interface -->
 <template >
     <el-container class="homecontainer">
         <el-header>
@@ -127,6 +126,7 @@ export default {
                     });
                 }
                 this.query_auth();
+                console.log(apiResponse.data);
             }
         },
         async submit_auth() {
@@ -146,6 +146,7 @@ export default {
                         cookie.identity,
                         this.input
                     )
+                    console.log(apiResponse.data)
                     if (apiResponse.data.success == true) {
                         this.$message({
                             showClose: true,
@@ -186,6 +187,18 @@ export default {
     flex-direction: row;
 }
 
+.div1 {
+    /* margin-top: 0px;
+    margin-left: 0px; */
+    text-align: center;
+}
+
+.div2 {
+    margin-left: 1270px;
+    margin-top: 30px;
+    float: right;
+    font-size: 12px;
+}
 
 .el-menu-demo {
     border-radius: 3px;
@@ -203,11 +216,34 @@ export default {
     line-height: 10px;
 }
 
+.el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+
+.el-aside {
+    background-color: #010b16;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+}
+
 .el-main {
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
     line-height: 10px;
+}
+
+.el-dropdown-link {
+    cursor: pointer;
+    color: #010e1b;
+}
+
+.el-icon-arrow-down {
+    font-size: 12px;
 }
 
 .submit_btn {

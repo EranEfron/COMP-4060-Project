@@ -1,4 +1,3 @@
-// APIs send function message into server
 import Api from '@/services/api'
 
 export default {

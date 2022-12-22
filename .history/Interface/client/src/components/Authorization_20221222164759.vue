@@ -1,4 +1,3 @@
-<!-- user authorization interface -->
 <template >
     <el-container class="homecontainer">
         <el-header>

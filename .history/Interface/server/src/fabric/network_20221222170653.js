@@ -1,5 +1,4 @@
-//Import Hyperledger Fabric 1.4 programming model - fabric-network
-//invoke the smart contract
+// //Import Hyperledger Fabric 1.4 programming model - fabric-network
 'use strict';
 
 import fabricNetwork from 'fabric-network';
