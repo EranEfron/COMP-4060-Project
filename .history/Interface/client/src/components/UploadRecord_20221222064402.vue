@@ -1,0 +1,202 @@
+<template >
+    <el-container class="homecontainer">
+        <el-header>
+            <div class="head">
+                <el-menu class="el-menu-demo" mode="horizontal" text-color="#333" active-text-color="#545c64">
+                    <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
+                    <el-menu-item index="2"><router-link to="/Upload">Upload</router-link></el-menu-item>
+                    <el-menu-item index="3"><router-link to="/Download">Download</router-link></el-menu-item>
+                    <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
+
+                </el-menu>
+            </div>
+        </el-header>
+        <el-main height="300px">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/home_page' }">Main Page</el-breadcrumb-item>
+                <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
+            </el-breadcrumb>
+            <h1>Enter patient's username</h1>
+            <div class="posts">
+                <el-input v-model="input" placeholder="Enter docter's username" size="0px"
+                    style="width:450px"></el-input>
+            </div>
+            <h1>Upload Medical record</h1>
+            <el-upload action class="upload-demo" drag :limit="1" :on-change="fileChange" :auto-upload="false"
+                :on-exceed="handleExceed" :on-remove="handleRemove" ref="upload">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">Drag file here or <em>click to upload</em></div>
+
+            </el-upload>
+            <div class="submit_btn">
+                <span slot="footer" class="footer">
+                    <el-button type="primary" @click="submitUpload">Upload</el-button>
+                </span>
+            </div>
+        </el-main>
+    </el-container>
+</template>
+   
+<script>
+import PostsService from "@/services/apiService";
+// import FileReader from ".@/FileReader";
+
+// import axios from "axios";
+export default {
+    name: "file",
+    data() {
+        return {
+            input: '',
+            fileDataList: [],
+            file: '',
+            fileContent: ''
+        }
+    },
+
+    methods: {
+        async submitUpload() {
+            const cookie = this.$cookies.get("current_user")
+
+            if (cookie == null) {
+                this.$message({
+                    onclose: true,
+                    message: "Your session is expired, please log in again",
+                    type: 'warning'
+                });
+                this.$router.push({ name: 'Login' })
+
+            } else {
+                if (this.file == '' || this.input == '') {
+                    this.$message.warning('Patient username or file is missing ');
+                }
+                else {
+                    const userexist = await PostsService.queryUser(
+                        this.input
+                    )
+                    console.log(userexist.data.success)
+                    if (userexist.data.success) {
+                        const reader = new FileReader();
+
+                        reader.onload = (event) => {
+                            const apiResponse = PostsService.UploadFile(
+                                this.input,
+                                cookie.name,
+                                cookie.identity,
+                                reader.result
+                            ).then(
+                                (value) => {
+                                    if (value.data.success == true) {
+                                        this.$message({
+                                            onclose: true,
+                                            message: value.data.description,
+                                            type: 'success'
+                                        });
+                                    } else {
+                                        this.$message.error(value.data.description);
+                                    }
+                                    this.$refs.upload.clearFiles();
+                                    this.file = '';
+                                    this.input = '';
+                                }
+                            );
+                        }
+                        reader.readAsText(this.file);
+                    } else {
+                        this.$message({
+                            onclose: true,
+                            message: "The patient does not exist in our database",
+                            type: 'error'
+                        });
+                        this.input = '';
+                    }
+                }
+            }
+        },
+        fileChange(file, fileList) {
+            this.file = file.raw;
+        },
+        handleExceed() {
+            this.$message.warning(`Limit to upload only 1 document, please merge if you have mutiple files`);
+        },
+        handleRemove() {
+            this.file = '';
+        }
+    }
+}
+</script>
+<style scoped>
+.homecontainer {
+    height: 763px;
+    width: 100%;
+
+}
+
+.head {
+    display: flex;
+    flex-direction: row;
+}
+
+.div1 {
+    /* margin-top: 0px;
+    margin-left: 0px; */
+    text-align: center;
+}
+
+.div2 {
+    margin-left: 1270px;
+    margin-top: 30px;
+    float: right;
+    font-size: 12px;
+}
+
+.el-menu-demo {
+    border-radius: 3px;
+    background-color: #4799e6aa;
+    overflow: hidden;
+
+    float: left;
+
+}
+
+.el-header {
+    background-color: #4799e6aa;
+    color: #333;
+    text-align: center;
+    line-height: 10px;
+}
+
+.el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+
+.el-aside {
+    background-color: #010b16;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+}
+
+.el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 10px;
+}
+
+.el-dropdown-link {
+    cursor: pointer;
+    color: #010e1b;
+}
+
+.el-icon-arrow-down {
+    font-size: 12px;
+}
+
+.submit_btn {
+    margin-top: 50px;
+}
+</style>
+  

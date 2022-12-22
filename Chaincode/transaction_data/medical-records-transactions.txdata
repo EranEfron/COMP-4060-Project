@@ -1,0 +1,68 @@
+[
+    {
+        "transactionName": "medicalRecordsExists",
+        "transactionLabel": "A test medicalRecordsExists transaction",
+        "arguments": [
+            {
+                "Patient":"001"
+            } 
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createMedicalRecords",
+        "transactionLabel": "A test createMedicalRecords transaction",
+        "arguments": [
+            {
+                "Patient":"001"
+            } 
+        ],
+        "transientData": {
+            "hash": "some value"
+        }
+    },
+    {
+        "transactionName": "readMedicalRecords",
+        "transactionLabel": "A test readMedicalRecords transaction",
+        "arguments": [
+            {
+                "Patient":"001"
+            } 
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateMedicalRecords",
+        "transactionLabel": "A test updateMedicalRecords transaction",
+        "arguments": [
+            {
+                "Patient":"001"
+            } 
+        ],
+        "transientData": {
+            "hash": "some other value"
+        }
+    },
+    {
+        "transactionName": "deleteMedicalRecords",
+        "transactionLabel": "A test deleteMedicalRecords transaction",
+        "arguments": [
+            {
+                "Patient":"001"
+            } 
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "verifyMedicalRecords",
+        "transactionLabel": "A test verifyMedicalRecords transaction",
+        "arguments":[
+            {
+                "MSP":"Org1MSP",
+                "Patient":"001",
+                "hash": "some other value"
+            }
+        ],
+        "transientData": {}
+    }
+]
