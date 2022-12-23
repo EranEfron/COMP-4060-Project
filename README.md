@@ -88,4 +88,6 @@ Follow the instruction to run this program locally
 ### Authorization - patient to give access to doctor to view their record
 ![image](https://user-images.githubusercontent.com/103357080/209276124-e042067e-d5d3-410c-aff6-a1443a167bbd.png)
 
-    
+# Reference
+https://github.com/IBM/evote
+https://github.com/the-chain/airmedfoundation-terminal
