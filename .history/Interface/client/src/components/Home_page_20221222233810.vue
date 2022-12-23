@@ -6,6 +6,8 @@
           <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
           <el-menu-item index="2" ><router-link to="/Upload">Upload</router-link></el-menu-item>
           <el-menu-item index="3"><router-link to="/Download">Download</router-link></el-menu-item>
+          <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
+
         </el-menu>
       </div>
     </el-header>
@@ -13,7 +15,7 @@
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/home_page' }">Main Page</el-breadcrumb-item>
           </el-breadcrumb>
-          <h1>Welcome to EMR system (Hosipital)</h1>
+          <h1>Welcome to EMR system(Hosipital)</h1>
           <img alt="LOGO" src="../assets/icon.jpg" width="300px" height="300px">
         </el-main>
   </el-container>

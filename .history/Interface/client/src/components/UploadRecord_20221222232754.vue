@@ -7,6 +7,7 @@
                     <el-menu-item index="1"><router-link to="/home_page">Home</router-link></el-menu-item>
                     <el-menu-item index="2"><router-link to="/Upload">Upload</router-link></el-menu-item>
                     <el-menu-item index="3"><router-link to="/Download">Download</router-link></el-menu-item>
+                    <el-menu-item index="4"><router-link to="/Authorization">Authorization</router-link></el-menu-item>
                 </el-menu>
             </div>
         </el-header>
@@ -25,7 +26,7 @@
                 :on-exceed="handleExceed" :on-remove="handleRemove" ref="upload" accept=".txt">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">Drag file here or <em>click to upload</em></div>
-                <div slot="tip" class="el-upload__tip">Only accept .txt file</div>
+
             </el-upload>
             <div class="submit_btn">
                 <span slot="footer" class="footer">

@@ -121,7 +121,7 @@ export default {
         }
         if(this.ruleForm.identity == "Patient"){
           this.$router.push({ name: 'Home_page_patient' })
-        }else if(this.ruleForm.identity == "Hospital"){
+        }else if(this.ruleForm.identity == "Hosipital"){
         this.$router.push({ name: 'Home_page' })
         }else{
           this.$router.push({ name: 'Home_page_insurance' })

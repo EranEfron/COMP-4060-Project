@@ -29,16 +29,6 @@ export default new Router({
       component: Home_patient
     },
     {
-      path: '/home_page_insurance',
-      name: 'Home_page_insurance',
-      component: Home_insurance
-    },
-    {
-      path: '/download_insurance',
-      name: 'Download_insurance',
-      component: Download_insurance
-    },
-    {
       path: '/download_patient',
       name: 'Download_patient',
       component: Download_patient

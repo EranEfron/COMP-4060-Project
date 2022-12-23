@@ -10,8 +10,6 @@ import Download from'@/components/Download'
 
 import Home_patient from'@/components/Home_page_patient'
 import Download_patient from'@/components/Download_patient'
-import Home_insurance from'@/components/Home_page_insurance'
-import Download_insurance from'@/components/Download_Insurance'
 
 Vue.use(Router)
 
@@ -27,16 +25,6 @@ export default new Router({
       path: '/home_page_patient',
       name: 'Home_page_patient',
       component: Home_patient
-    },
-    {
-      path: '/home_page_insurance',
-      name: 'Home_page_insurance',
-      component: Home_insurance
-    },
-    {
-      path: '/download_insurance',
-      name: 'Download_insurance',
-      component: Download_insurance
     },
     {
       path: '/download_patient',
