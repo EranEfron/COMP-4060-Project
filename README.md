@@ -41,7 +41,7 @@ Follow the instruction to run this program locally
 
 * Create Fabric Environments
    - Click '+' on the right top of the FABRIC ENVIRONMENTS
-   ![image](https://user-images.githubusercontent.com/103357080/209271189-87bd0dda-a2de-4814-a4d8-d032f80c2069.png)
+![image](https://user-images.githubusercontent.com/103357080/209271189-87bd0dda-a2de-4814-a4d8-d032f80c2069.png)
    - Select Create new from template
    - Select 1 Org template(1 CA, 1 Peer, 1 channel)
    - Name it "1 Org Local Fabric"
@@ -51,7 +51,7 @@ Follow the instruction to run this program locally
 ![image](https://user-images.githubusercontent.com/103357080/209270601-8e5b498f-743e-428e-8f46-f0eca05ff6f6.png)   
     - Once its packed, click on mychannel and + Deploy smart contract.
     - Select "Project@0.3.1" and deploy
-    ![image](https://user-images.githubusercontent.com/103357080/209271905-f99265e3-9be6-4069-8bb3-d8af10d7c9fb.png)
+![image](https://user-images.githubusercontent.com/103357080/209271905-f99265e3-9be6-4069-8bb3-d8af10d7c9fb.png)
 #### Step5 - Start the Gateways
 ![image](https://user-images.githubusercontent.com/103357080/209273193-63a77b53-a4b6-4c8c-899c-61083162eeb0.png)
 
